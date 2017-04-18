@@ -13,7 +13,7 @@
 #endif
 
 #define FRAMES 3
-#define FREQ 1
+#define FREQ 10
 
 #ifdef OPENCV
 #include "opencv2/highgui/highgui_c.h"

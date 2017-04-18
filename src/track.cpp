@@ -3,7 +3,7 @@ using namespace std;
 using namespace cv;
 
 BBOX_tracker::BBOX_tracker(){
-	string trackingAlg = "KCF";
+	string trackingAlg = "MEDIANFLOW";
 	MultiTracker trackers(trackingAlg);
 	m_trackers = trackers;
 }
