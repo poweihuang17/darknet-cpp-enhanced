@@ -26,14 +26,6 @@ void BBOX_tracker::InitTracker(){
 }
 
 void BBOX_tracker::update(){
-
-	// for(int i = 0; i < m_trackers.objects.size(); i++){
-		// cout << "objects" << endl;
-		// cout << m_trackers.objects[i].x << endl;
-		// cout << m_trackers.objects[i].y << endl;
-		// cout << m_trackers.objects[i].width << endl;
-		// cout << m_trackers.objects[i].height << endl;
-	// }
 	double before = get_wall_time();
 	m_trackers.update(cur_frame_mat);
 	double after = get_wall_time();

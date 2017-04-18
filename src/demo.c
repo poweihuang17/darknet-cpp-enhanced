@@ -19,6 +19,7 @@
 #include "opencv2/highgui/highgui_c.h"
 #include "opencv2/imgproc/imgproc_c.h"
 image get_image_from_stream_demo(CvCapture *cap, IplImage **cur_frame, int keyframe);
+vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes);
 
 static char **demo_names;
 static image **demo_alphabet;
@@ -112,7 +113,13 @@ void *detect_in_thread(void *ptr)
     /* det = images[(demo_index + FRAMES/2 + 1)%FRAMES]; */
     /* demo_index = (demo_index + 1)%FRAMES; */
 
-    process_detections(det, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
+	vector<Rect2d> bboxes;
+    bboxes = process_detections(det, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
+	Mat cur_frame_mat = cvarrToMat(cur_frame);
+	for(unsigned int i = 0; i < bboxes.size(); i++)
+		rectangle(cur_frame_mat, bboxes[i], Scalar(0, 255, 0), 2, 1);
+	imshow("demo", cur_frame_mat);
+	waitKey(1);
 
     return 0;
 }
@@ -228,7 +235,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 }
 #endif
 
-void process_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes)
+vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes)
 {
     int i;
 	vector<Rect2d> tmp_bbox_list;
@@ -287,4 +294,5 @@ void process_detections(image im, int num, float thresh, box *boxes, float **pro
 	bbox_tracker.SetObjects(tmp_bbox_list);
 	bbox_tracker.SetFrame(cur_frame);
 	bbox_tracker.InitTracker();
+	return tmp_bbox_list;
 }
