@@ -61,18 +61,15 @@ void *fetch_in_thread(void *ptr)
 	if(!cur_frame)
 		cvReleaseImage(&cur_frame);
 	if(frame_id % FREQ == 0){
-		double before = get_wall_time();
     	in = get_image_from_stream_demo(cap, &cur_frame, 1);
-		double after = get_wall_time();
-		cout << "get image cost " << after - before << " seconds" << endl;
     	if(!in.data){
         	error("Stream closed.");
     	}
-		before = get_wall_time();
-    	in_s = resize_image(in, net.w, net.h);
-		after = get_wall_time();
-		cout << "resize image cost " << after - before << " seconds" << endl;
-
+        /* in_s = resize_image(in, net.w, net.h); */
+		double before = get_wall_time();
+		in_s = crop_image(in, 500, 500, 416, 416);
+		double after = get_wall_time();
+		cout << "crop image cost " << 1000 * (after - before) << "ms" << endl;
 	}
 	else{
 		get_image_from_stream_demo(cap, &cur_frame, 0);
@@ -86,32 +83,18 @@ void *detect_in_thread(void *ptr)
 
     layer l = net.layers[net.n-1];
     float *X = det_s.data;
-	double before = get_wall_time();
     float *prediction = network_predict(net, X);
-	double after = get_wall_time();
-	cout << "predict cost " << after - before << " seconds" << endl;
-
-    /* memcpy(predictions[demo_index], prediction, l.outputs*sizeof(float)); */
-    /* mean_arrays(predictions, FRAMES, l.outputs, avg); */
-    /* l.output = avg; */
 
     free_image(det_s);
     if(l.type == DETECTION){
         get_detection_boxes(l, 1, 1, demo_thresh, probs, boxes, 0);
     } else if (l.type == REGION){
-        get_region_boxes(l, 1, 1, demo_thresh, probs, boxes, 0, 0, demo_hier_thresh);
+        get_region_boxes(l, 1, 1, demo_thresh, probs, boxes, 1, 0, demo_hier_thresh);
     } else {
         error("Last layer must produce detections\n");
     }
     if (nms > 0) do_nms(boxes, probs, l.w*l.h*l.n, l.classes, nms);
-    printf("\033[2J");
-    printf("\033[1;1H");
-    printf("\nFPS:%.1f\n",fps);
     printf("Objects:\n\n");
-
-    /* images[demo_index] = det; */
-    /* det = images[(demo_index + FRAMES/2 + 1)%FRAMES]; */
-    /* demo_index = (demo_index + 1)%FRAMES; */
 
 	vector<Rect2d> bboxes;
     bboxes = process_detections(det, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
@@ -124,6 +107,37 @@ void *detect_in_thread(void *ptr)
     return 0;
 }
 
+void *detect_roi_in_thread(void *ptr)
+{
+    float nms = .4;
+
+    layer l = net.layers[net.n - 1];
+    float *X = det_s.data;
+    float *prediction = network_predict(net, X);
+
+    free_image(det_s);
+    if(l.type == DETECTION){
+        get_detection_boxes(l, 1, 1, demo_thresh, probs, boxes, 0);
+    } else if (l.type == REGION){
+        get_region_boxes(l, 1, 1, demo_thresh, probs, boxes, 1, 0, demo_hier_thresh);
+    } else {
+        error("Last layer must produce detections\n");
+    }
+    if (nms > 0) do_nms(boxes, probs, l.w*l.h*l.n, l.classes, nms);
+    printf("Objects:\n\n");
+
+	vector<Rect2d> bboxes;
+    bboxes = process_detections(det, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
+	Mat cur_frame_mat = cvarrToMat(cur_frame);
+	for(unsigned int i = 0; i < bboxes.size(); i++)
+		rectangle(cur_frame_mat, bboxes[i], Scalar(0, 255, 0), 2, 1);
+	imshow("demo", cur_frame_mat);
+	waitKey(1);
+
+    return 0;
+}
+
+double total_frame_cost = 0.;
 void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const char *filename, char **names, int classes, int frame_skip, char *prefix, float hier_thresh)
 {
     //skip = frame_skip;
@@ -167,11 +181,6 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
     pthread_t detect_thread;
 
     int count = 0;
-	/* if(!prefix){ */
-		/* cvNamedWindow("Demo", CV_WINDOW_NORMAL);  */
-		/* cvMoveWindow("Demo", 0, 0); */
-		/* cvResizeWindow("Demo", 1352, 1013); */
-	/* } */
 	
     double before = get_wall_time();
     while(1){
@@ -205,16 +214,16 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
             det_s = in_s;
         }else{
             fetch_in_thread(0);
+			//  keyframe
 			if(frame_id % FREQ == 0){
 				det   = in;
 				det_s = in_s;
 				bbox_tracker = BBOX_tracker();
 				detect_in_thread(0);
 				disp = det;
-				/* show_image(disp, "Demo"); */
-				/* cvWaitKey(1); */
 				free_image(disp);
 			}
+			// non-keyframe
 			else{
 				bbox_tracker.SetFrame(cur_frame);
 				bbox_tracker.update();
@@ -223,8 +232,12 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 			frame_id += 1;
         }
 		double after = get_wall_time();
-		float curr = 1./(after - before);
-		fps = curr;
+		double frame_cost = after - before;
+		total_frame_cost += frame_cost;
+		fps = total_frame_cost / (frame_id + 1);
+		printf("\033[2J");
+		printf("\033[1;1H");
+		printf("\nFPS:%.1f\n", fps);
 		before = after;
     }
 }

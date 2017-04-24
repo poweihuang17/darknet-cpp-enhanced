@@ -521,21 +521,12 @@ image get_image_from_stream(CvCapture *cap)
 
 image get_image_from_stream_demo(CvCapture *cap, IplImage **cur_frame, int keyframe)
 {
-	double before = get_wall_time();
     IplImage* src = cvQueryFrame(cap);
-	double after = get_wall_time();
-	std::cout << "cvQueryFrame cost " << after - before << " seconds" << std::endl;
 	*cur_frame = src;
 	if(keyframe){
 		if (!src) return make_empty_image(0,0,0);
-		before = get_wall_time();
     	image im = ipl_to_image(src);
-		after = get_wall_time();
-		std::cout << "ipl to image cost " << after - before << " seconds" << std::endl;
-		before = get_wall_time();
     	rgbgr_image(im);
-		after = get_wall_time();
-		std::cout << "rgb image cost " << after - before << " seconds" << std::endl;
     	return im;
 	}
 }
