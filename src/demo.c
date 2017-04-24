@@ -101,7 +101,7 @@ void *detect_in_thread(void *ptr)
     } else {
         error("Last layer must produce detections\n");
     }
-    if (nms > 0) do_nms(boxes, probs, l.w*l.h*l.n, l.classes, nms);
+	if (nms > 0) do_nms(boxes, probs, l.w*l.h*l.n, l.classes, nms);
 	double after = get_wall_time();
 	cout <<"predict frame cost " << 1000 * (after - before) << " ms" << endl;
     printf("Objects:\n");
