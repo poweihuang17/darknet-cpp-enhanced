@@ -31,6 +31,7 @@ static box *boxes;
 static network net;
 static IplImage *cur_frame;
 static Mat cur_frame_mat;
+static Mat cur_frame_mat_s;
 static image in   ;
 static image in_s ;
 static image det  ;
@@ -47,6 +48,7 @@ static float *predictions[FRAMES];
 static int demo_index = 0;
 static image images[FRAMES];
 static float *avg;
+vector<Rect2d> bbox_draw;
 
 double get_wall_time()
 {
@@ -69,6 +71,7 @@ void *fetch_in_thread(void *ptr)
 	cvSetImageROI(cur_frame, roi);
 	IplImage *cur_frame_crop = cvCreateImage(cvGetSize(cur_frame), cur_frame->depth, cur_frame->nChannels);
 	cvCopy(cur_frame, cur_frame_crop, NULL);
+	cur_frame_mat_s = cvarrToMat(cur_frame_crop);
 	cvResetImageROI(cur_frame);
 	double after = get_wall_time();
 	cout << "preprocess cost " << 1000 * (after - before) << " ms" << endl;
@@ -91,7 +94,6 @@ void *detect_in_thread(void *ptr)
     float *X = det_s.data;
     float *prediction = network_predict(net, X);
 
-    free_image(det_s);
     if(l.type == DETECTION){
         get_detection_boxes(l, 1, 1, demo_thresh, probs, boxes, 0);
     } else if (l.type == REGION){
@@ -103,12 +105,9 @@ void *detect_in_thread(void *ptr)
     printf("Objects:\n\n");
 
 	vector<Rect2d> bboxes;
-    bboxes = process_detections(det, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
-	for(unsigned int i = 0; i < bboxes.size(); i++)
-		rectangle(cur_frame_mat, bboxes[i], Scalar(0, 255, 0), 2, 1);
-	rectangle(cur_frame_mat, Point(800, 500), Point(1216, 916), Scalar(0, 255, 0), 2, 1);
-	imshow("demo", cur_frame_mat);
-	waitKey(1);
+    bboxes = process_detections(det_s, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
+	bbox_draw = bboxes;
+    free_image(det_s);
 
     return 0;
 }
@@ -194,19 +193,25 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
             fetch_in_thread(0);
 			//  keyframe
 			if(frame_id % FREQ == 0){
-				/* det   = in; */
 				det_s = in_s;
 				bbox_tracker = BBOX_tracker();
 				detect_in_thread(0);
-				/* disp = det; */
-				/* free_image(disp); */
 			}
 			// non-keyframe
 			else{
-				bbox_tracker.SetFrame(cur_frame_mat);
+				bbox_tracker.SetFrame(cur_frame_mat_s);
 				bbox_tracker.update();
-				bbox_tracker.draw_tracking();
+				bbox_draw = bbox_tracker.m_trackers.objects;
 			}
+			for(unsigned int i = 0; i < bbox_draw.size(); i++){
+				bbox_draw.at(i).x += 800;
+				bbox_draw.at(i).y += 500;
+				rectangle(cur_frame_mat, bbox_draw[i], Scalar(0, 255, 0), 2, 1);
+			}
+			rectangle(cur_frame_mat, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
+			imshow("demo", cur_frame_mat);
+			waitKey(1);
+
 			frame_id += 1;
         }
 		double after = get_wall_time();
@@ -231,57 +236,29 @@ vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, f
     int i;
 	vector<Rect2d> tmp_bbox_list;
     for(i = 0; i < num; ++i){
-        int class1 = max_index(probs[i], classes);
-        float prob = probs[i][class1];
+        float prob = probs[i][0];
         if(prob > thresh){
-            int width = im.h * .012;
-
-            if(0){
-                width = pow(prob, 1.f/2.f)*10+1;
-                alphabet = 0;
-            }
-
-            printf("%s: %.0f%%\n", names[class1], prob*100);
-            int offset = class1*123457 % classes;
-
-            float red = get_color(2,offset,classes);
-            float green = get_color(1,offset,classes);
-            float blue = get_color(0,offset,classes);
-            float rgb[3];
-
-            //width = prob*20+2;
-
-            rgb[0] = red;
-            rgb[1] = green;
-            rgb[2] = blue;
+            printf("%s: %.0f%%\n", names[0], prob*100);
             box b = boxes[i];
-
-            int left  = (b.x - b.w / 2.) * 416;
-            int right = (b.x + b.w / 2.) * 416;
-            int top   = (b.y - b.h / 2.) * 416;
-            int bot   = (b.y + b.h / 2.) * 416;
-			left += 800;
-			right += 800;
-			top += 500;
-			bot += 500;
+            int left  = (b.x - b.w / 2.) * im.w;
+            int right = (b.x + b.w / 2.) * im.w;
+            int top   = (b.y - b.h / 2.) * im.h;
+            int bot   = (b.y + b.h / 2.) * im.h;
+			/* left += 800; */
+			/* right += 800; */
+			/* top += 500; */
+			/* bot += 500; */
 			Rect bbox;
 			bbox.x = left;
 			bbox.y = top;
 			bbox.width = right - left;
 			bbox.height = bot - top;
-			
 			tmp_bbox_list.push_back(bbox);
-
-            /* draw_box_width(im, left, top, right, bot, width, red, green, blue); */
-            /* if (alphabet) { */
-                /* image label = get_label(alphabet, names[class1], (im.h*.03)/10); */
-                /* draw_label(im, top + width, left, label, rgb); */
-            /* } */
         }
     }
 	bbox_tracker.CleanObjects();
 	bbox_tracker.SetObjects(tmp_bbox_list);
-	bbox_tracker.SetFrame(cur_frame_mat);
+	bbox_tracker.SetFrame(cur_frame_mat_s);
 	bbox_tracker.InitTracker();
 	return tmp_bbox_list;
 }

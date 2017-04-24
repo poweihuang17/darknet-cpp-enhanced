@@ -36,6 +36,7 @@ void BBOX_tracker::draw_tracking(){
 	for(unsigned int i = 0; i < m_trackers.objects.size(); i++)
 		rectangle(cur_frame_mat, m_trackers.objects[i], Scalar(255, 0, 0), 2, 1);
 	rectangle(cur_frame_mat, Point(800, 500), Point(1216, 916), Scalar(0, 255, 0), 2, 1);
+
 	imshow("demo", cur_frame_mat);
 	waitKey(1);
 }
