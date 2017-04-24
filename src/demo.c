@@ -66,6 +66,8 @@ void *fetch_in_thread(void *ptr)
 		cvReleaseImage(&cur_frame);
 	double before = get_wall_time();
 	cur_frame = cvQueryFrame(cap);
+	double after = get_wall_time();
+	cout <<"capture frame cost " << 1000 * (after - before) << " ms" << endl;
 	cur_frame_mat = cvarrToMat(cur_frame);
 	CvRect roi = cvRect(800, 500, 416, 416);
 	cvSetImageROI(cur_frame, roi);
@@ -73,8 +75,6 @@ void *fetch_in_thread(void *ptr)
 	cvCopy(cur_frame, cur_frame_crop, NULL);
 	cur_frame_mat_s = cvarrToMat(cur_frame_crop);
 	cvResetImageROI(cur_frame);
-	double after = get_wall_time();
-	cout << "preprocess cost " << 1000 * (after - before) << " ms" << endl;
 	//  keyframe
 	if(frame_id % FREQ == 0){
 		image im;
@@ -89,11 +89,11 @@ void *fetch_in_thread(void *ptr)
 void *detect_in_thread(void *ptr)
 {
     float nms = .4;
-
     layer l = net.layers[net.n-1];
     float *X = det_s.data;
     float *prediction = network_predict(net, X);
 
+	double before = get_wall_time();
     if(l.type == DETECTION){
         get_detection_boxes(l, 1, 1, demo_thresh, probs, boxes, 0);
     } else if (l.type == REGION){
@@ -102,7 +102,9 @@ void *detect_in_thread(void *ptr)
         error("Last layer must produce detections\n");
     }
     if (nms > 0) do_nms(boxes, probs, l.w*l.h*l.n, l.classes, nms);
-    printf("Objects:\n\n");
+	double after = get_wall_time();
+	cout <<"predict frame cost " << 1000 * (after - before) << " ms" << endl;
+    printf("Objects:\n");
 
 	vector<Rect2d> bboxes;
     bboxes = process_detections(det_s, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
@@ -216,6 +218,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
         }
 		double after = get_wall_time();
 		double frame_cost = after - before;
+		cout << "this frame cost " << 1000 * frame_cost << " ms" << endl;
 		total_frame_cost += frame_cost;
 		fps = (frame_id + 1.) / total_frame_cost;
 		printf("\033[2J");
