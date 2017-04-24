@@ -18,9 +18,6 @@
 #ifdef OPENCV
 #include "opencv2/highgui/highgui_c.h"
 #include "opencv2/imgproc/imgproc_c.h"
-image ipl_to_image(IplImage* src);
-image get_image_from_stream_demo(CvCapture *cap, IplImage **cur_frame, int keyframe);
-vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes);
 
 static char **demo_names;
 static image **demo_alphabet;
@@ -31,9 +28,10 @@ static box *boxes;
 static network net;
 static IplImage *cur_frame;
 static Mat cur_frame_mat;
-static Mat cur_frame_mat_s;
+static Mat roi_mid_mat;
 static image in   ;
 static image in_s ;
+static image roi_mid_img;
 static image det  ;
 static image det_s;
 static image disp = {0};
@@ -42,7 +40,8 @@ static float fps = 0;
 static float demo_thresh = 0;
 static float demo_hier_thresh = .5;
 static int frame_id;
-BBOX_tracker bbox_tracker;
+BBOX_tracker mid_tracker;
+BBOX_tracker right_tracker;
 
 static float *predictions[FRAMES];
 static int demo_index = 0;
@@ -50,8 +49,11 @@ static image images[FRAMES];
 static float *avg;
 vector<Rect2d> bbox_draw;
 
-double get_wall_time()
-{
+image ipl_to_image(IplImage* src);
+image get_image_from_stream_demo(CvCapture *cap, IplImage **cur_frame, int keyframe);
+vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes);
+
+double get_wall_time(){
     struct timeval time;
     if (gettimeofday(&time,NULL)){
         return 0;
@@ -59,29 +61,31 @@ double get_wall_time()
     return (double)time.tv_sec + (double)time.tv_usec * .000001;
 }
 
+IplImage *crop_IplImage(IplImage *src, CvRect roi){
+	cvSetImageROI(src, roi);
+	IplImage *src_crop = cvCreateImage(cvGetSize(src), src->depth, src->nChannels);
+	cvCopy(src, src_crop, NULL);
+	cvResetImageROI(src);
+	return src_crop;
+}
+
 
 void *fetch_in_thread(void *ptr)
 {
 	if(!cur_frame)
 		cvReleaseImage(&cur_frame);
-	double before = get_wall_time();
 	cur_frame = cvQueryFrame(cap);
-	double after = get_wall_time();
-	cout <<"capture frame cost " << 1000 * (after - before) << " ms" << endl;
 	cur_frame_mat = cvarrToMat(cur_frame);
-	CvRect roi = cvRect(800, 500, 416, 416);
-	cvSetImageROI(cur_frame, roi);
-	IplImage *cur_frame_crop = cvCreateImage(cvGetSize(cur_frame), cur_frame->depth, cur_frame->nChannels);
-	cvCopy(cur_frame, cur_frame_crop, NULL);
-	cur_frame_mat_s = cvarrToMat(cur_frame_crop);
-	cvResetImageROI(cur_frame);
+	IplImage *roi_mid_ipl = crop_IplImage(cur_frame, cvRect(800, 500, 416, 416));
+	IplImage *roi_right_ipl = crop_IplImage(cur_frame, cvRect(1216, 500, 416, 416));
+	roi_mid_mat = cvarrToMat(roi_mid_ipl);
+
 	//  keyframe
 	if(frame_id % FREQ == 0){
 		image im;
 		if (!cur_frame) im = make_empty_image(0, 0, 0);
-		im = ipl_to_image(cur_frame_crop);
-		rgbgr_image(im);
-		in_s = im;
+		im = ipl_to_image(roi_mid_ipl);
+		roi_mid_img = im;
 	}
     return 0;
 }
@@ -90,10 +94,12 @@ void *detect_in_thread(void *ptr)
 {
     float nms = .4;
     layer l = net.layers[net.n-1];
-    float *X = det_s.data;
-    float *prediction = network_predict(net, X);
-
+    float *X = roi_mid_img.data;
 	double before = get_wall_time();
+    float *prediction = network_predict(net, X);
+	double after = get_wall_time();
+	cout <<"predict frame cost " << 1000 * (after - before) << " ms" << endl;
+
     if(l.type == DETECTION){
         get_detection_boxes(l, 1, 1, demo_thresh, probs, boxes, 0);
     } else if (l.type == REGION){
@@ -102,14 +108,12 @@ void *detect_in_thread(void *ptr)
         error("Last layer must produce detections\n");
     }
 	if (nms > 0) do_nms(boxes, probs, l.w*l.h*l.n, l.classes, nms);
-	double after = get_wall_time();
-	cout <<"predict frame cost " << 1000 * (after - before) << " ms" << endl;
     printf("Objects:\n");
 
 	vector<Rect2d> bboxes;
-    bboxes = process_detections(det_s, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
+    bboxes = process_detections(roi_mid_img, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
 	bbox_draw = bboxes;
-    free_image(det_s);
+    free_image(roi_mid_img);
 
     return 0;
 }
@@ -195,35 +199,40 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
             fetch_in_thread(0);
 			//  keyframe
 			if(frame_id % FREQ == 0){
-				det_s = in_s;
-				bbox_tracker = BBOX_tracker();
+				bbox_tracker = mid_tracker();
 				detect_in_thread(0);
+				for(unsigned int i = 0; i < bbox_draw.size(); i++){
+					bbox_draw.at(i).x += 800;
+					bbox_draw.at(i).y += 500;
+					rectangle(cur_frame_mat, bbox_draw[i], Scalar(0, 255, 0), 2, 1);
+				}
 			}
 			// non-keyframe
 			else{
-				bbox_tracker.SetFrame(cur_frame_mat_s);
-				bbox_tracker.update();
-				bbox_draw = bbox_tracker.m_trackers.objects;
-			}
-			for(unsigned int i = 0; i < bbox_draw.size(); i++){
-				bbox_draw.at(i).x += 800;
-				bbox_draw.at(i).y += 500;
-				rectangle(cur_frame_mat, bbox_draw[i], Scalar(0, 255, 0), 2, 1);
+				mid_tracker.SetROI(roi_mid_mat);
+				mid_tracker.update();
+				bbox_draw = mid_tracker.m_trackers.objects;
+				for(unsigned int i = 0; i < bbox_draw.size(); i++){
+					bbox_draw.at(i).x += 800;
+					bbox_draw.at(i).y += 500;
+					rectangle(cur_frame_mat, bbox_draw[i], Scalar(0, 0, 255), 2, 1);
+				}
 			}
 			rectangle(cur_frame_mat, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
+			rectangle(cur_frame_mat, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
 			imshow("demo", cur_frame_mat);
 			waitKey(1);
-
 			frame_id += 1;
         }
 		double after = get_wall_time();
 		double frame_cost = after - before;
 		cout << "this frame cost " << 1000 * frame_cost << " ms" << endl;
 		total_frame_cost += frame_cost;
-		fps = (frame_id + 1.) / total_frame_cost;
+		fps = (frame_id + 1.) / (total_frame_cost);
 		printf("\033[2J");
 		printf("\033[1;1H");
-		printf("\nFPS:%.1f\n", fps);
+		printf("[frame id:%d]\n", frame_id);
+		printf("FPS:%.1f\n", fps);
 		before = after;
     }
 }
@@ -259,9 +268,9 @@ vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, f
 			tmp_bbox_list.push_back(bbox);
         }
     }
-	bbox_tracker.CleanObjects();
-	bbox_tracker.SetObjects(tmp_bbox_list);
-	bbox_tracker.SetFrame(cur_frame_mat_s);
-	bbox_tracker.InitTracker();
+	mid_tracker.CleanObjects();
+	mid_tracker.SetObjects(tmp_bbox_list);
+	mid_tracker.SetROI(roi_mid_mat);
+	mid_tracker.InitTracker();
 	return tmp_bbox_list;
 }
