@@ -199,7 +199,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
             fetch_in_thread(0);
 			//  keyframe
 			if(frame_id % FREQ == 0){
-				bbox_tracker = mid_tracker();
+				mid_tracker = BBOX_tracker();
 				detect_in_thread(0);
 				for(unsigned int i = 0; i < bbox_draw.size(); i++){
 					bbox_draw.at(i).x += 800;
