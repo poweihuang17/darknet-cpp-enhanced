@@ -160,6 +160,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 
     pthread_t fetch_thread;
     pthread_t detect_thread;
+	pthread_t detect_mid_thread, detect_right_thread;
 
     int count = 0;
 	namedWindow("demo", WINDOW_NORMAL);
@@ -200,7 +201,8 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 			//  keyframe
 			if(frame_id % FREQ == 0){
 				mid_tracker = BBOX_tracker();
-				detect_in_thread(0);
+				if(pthread_create(&detect_mid_thread, 0, detect_in_thread, 0)) error("Thread creation failed");
+				pthread_join(detect_mid_thread, 0);
 				for(unsigned int i = 0; i < bbox_draw.size(); i++){
 					bbox_draw.at(i).x += 800;
 					bbox_draw.at(i).y += 500;
