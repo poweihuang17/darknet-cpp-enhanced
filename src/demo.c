@@ -18,6 +18,7 @@
 #ifdef OPENCV
 #include "opencv2/highgui/highgui_c.h"
 #include "opencv2/imgproc/imgproc_c.h"
+image ipl_to_image(IplImage* src);
 image get_image_from_stream_demo(CvCapture *cap, IplImage **cur_frame, int keyframe);
 vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes);
 
@@ -29,6 +30,7 @@ static float **probs;
 static box *boxes;
 static network net;
 static IplImage *cur_frame;
+static Mat cur_frame_mat;
 static image in   ;
 static image in_s ;
 static image det  ;
@@ -60,19 +62,23 @@ void *fetch_in_thread(void *ptr)
 {
 	if(!cur_frame)
 		cvReleaseImage(&cur_frame);
+	double before = get_wall_time();
+	cur_frame = cvQueryFrame(cap);
+	cur_frame_mat = cvarrToMat(cur_frame);
+	CvRect roi = cvRect(800, 500, 416, 416);
+	cvSetImageROI(cur_frame, roi);
+	IplImage *cur_frame_crop = cvCreateImage(cvGetSize(cur_frame), cur_frame->depth, cur_frame->nChannels);
+	cvCopy(cur_frame, cur_frame_crop, NULL);
+	cvResetImageROI(cur_frame);
+	double after = get_wall_time();
+	cout << "preprocess cost " << 1000 * (after - before) << " ms" << endl;
+	//  keyframe
 	if(frame_id % FREQ == 0){
-    	in = get_image_from_stream_demo(cap, &cur_frame, 1);
-    	if(!in.data){
-        	error("Stream closed.");
-    	}
-        /* in_s = resize_image(in, net.w, net.h); */
-		double before = get_wall_time();
-		in_s = crop_image(in, 500, 500, 416, 416);
-		double after = get_wall_time();
-		cout << "crop image cost " << 1000 * (after - before) << "ms" << endl;
-	}
-	else{
-		get_image_from_stream_demo(cap, &cur_frame, 0);
+		image im;
+		if (!cur_frame) im = make_empty_image(0, 0, 0);
+		im = ipl_to_image(cur_frame_crop);
+		rgbgr_image(im);
+		in_s = im;
 	}
     return 0;
 }
@@ -98,39 +104,9 @@ void *detect_in_thread(void *ptr)
 
 	vector<Rect2d> bboxes;
     bboxes = process_detections(det, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
-	Mat cur_frame_mat = cvarrToMat(cur_frame);
 	for(unsigned int i = 0; i < bboxes.size(); i++)
 		rectangle(cur_frame_mat, bboxes[i], Scalar(0, 255, 0), 2, 1);
-	imshow("demo", cur_frame_mat);
-	waitKey(1);
-
-    return 0;
-}
-
-void *detect_roi_in_thread(void *ptr)
-{
-    float nms = .4;
-
-    layer l = net.layers[net.n - 1];
-    float *X = det_s.data;
-    float *prediction = network_predict(net, X);
-
-    free_image(det_s);
-    if(l.type == DETECTION){
-        get_detection_boxes(l, 1, 1, demo_thresh, probs, boxes, 0);
-    } else if (l.type == REGION){
-        get_region_boxes(l, 1, 1, demo_thresh, probs, boxes, 1, 0, demo_hier_thresh);
-    } else {
-        error("Last layer must produce detections\n");
-    }
-    if (nms > 0) do_nms(boxes, probs, l.w*l.h*l.n, l.classes, nms);
-    printf("Objects:\n\n");
-
-	vector<Rect2d> bboxes;
-    bboxes = process_detections(det, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
-	Mat cur_frame_mat = cvarrToMat(cur_frame);
-	for(unsigned int i = 0; i < bboxes.size(); i++)
-		rectangle(cur_frame_mat, bboxes[i], Scalar(0, 255, 0), 2, 1);
+	rectangle(cur_frame_mat, Point(800, 500), Point(1216, 916), Scalar(0, 255, 0), 2, 1);
 	imshow("demo", cur_frame_mat);
 	waitKey(1);
 
@@ -181,6 +157,8 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
     pthread_t detect_thread;
 
     int count = 0;
+	namedWindow("demo", WINDOW_NORMAL);
+	resizeWindow("demo", 640, 480);
 	
     double before = get_wall_time();
     while(1){
@@ -216,16 +194,16 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
             fetch_in_thread(0);
 			//  keyframe
 			if(frame_id % FREQ == 0){
-				det   = in;
+				/* det   = in; */
 				det_s = in_s;
 				bbox_tracker = BBOX_tracker();
 				detect_in_thread(0);
-				disp = det;
-				free_image(disp);
+				/* disp = det; */
+				/* free_image(disp); */
 			}
 			// non-keyframe
 			else{
-				bbox_tracker.SetFrame(cur_frame);
+				bbox_tracker.SetFrame(cur_frame_mat);
 				bbox_tracker.update();
 				bbox_tracker.draw_tracking();
 			}
@@ -234,7 +212,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		double after = get_wall_time();
 		double frame_cost = after - before;
 		total_frame_cost += frame_cost;
-		fps = total_frame_cost / (frame_id + 1);
+		fps = (frame_id + 1.) / total_frame_cost;
 		printf("\033[2J");
 		printf("\033[1;1H");
 		printf("\nFPS:%.1f\n", fps);
@@ -278,11 +256,14 @@ vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, f
             rgb[2] = blue;
             box b = boxes[i];
 
-            int left  = (b.x-b.w/2.)*im.w;
-            int right = (b.x+b.w/2.)*im.w;
-            int top   = (b.y-b.h/2.)*im.h;
-            int bot   = (b.y+b.h/2.)*im.h;
-
+            int left  = (b.x - b.w / 2.) * 416;
+            int right = (b.x + b.w / 2.) * 416;
+            int top   = (b.y - b.h / 2.) * 416;
+            int bot   = (b.y + b.h / 2.) * 416;
+			left += 800;
+			right += 800;
+			top += 500;
+			bot += 500;
 			Rect bbox;
 			bbox.x = left;
 			bbox.y = top;
@@ -291,21 +272,16 @@ vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, f
 			
 			tmp_bbox_list.push_back(bbox);
 
-            if(left < 0) left = 0;
-            if(right > im.w-1) right = im.w-1;
-            if(top < 0) top = 0;
-            if(bot > im.h-1) bot = im.h-1;
-
-            draw_box_width(im, left, top, right, bot, width, red, green, blue);
-            if (alphabet) {
-                image label = get_label(alphabet, names[class1], (im.h*.03)/10);
-                draw_label(im, top + width, left, label, rgb);
-            }
+            /* draw_box_width(im, left, top, right, bot, width, red, green, blue); */
+            /* if (alphabet) { */
+                /* image label = get_label(alphabet, names[class1], (im.h*.03)/10); */
+                /* draw_label(im, top + width, left, label, rgb); */
+            /* } */
         }
     }
 	bbox_tracker.CleanObjects();
 	bbox_tracker.SetObjects(tmp_bbox_list);
-	bbox_tracker.SetFrame(cur_frame);
+	bbox_tracker.SetFrame(cur_frame_mat);
 	bbox_tracker.InitTracker();
 	return tmp_bbox_list;
 }

@@ -25,7 +25,7 @@ class BBOX_tracker{
 		BBOX_tracker();
 		void SetObjects(BBOX_list bbox_list);
 		void CleanObjects();
-		void SetFrame(IplImage *current_frame);
+		void SetFrame(Mat cur_frame);
 		void InitTracker();
 		void update();
 		void draw_tracking();
