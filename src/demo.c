@@ -12,7 +12,6 @@
 #include <sys/time.h>
 #endif
 
-#define FRAMES 3
 #define FREQ 10
 
 #ifdef OPENCV
@@ -22,7 +21,6 @@
 static char **demo_names;
 static image **demo_alphabet;
 static int demo_classes;
-
 static float **probs;
 static box *boxes;
 static network net;
@@ -33,9 +31,6 @@ static Mat roi_left_mat;
 static image roi_mid_img;
 static image roi_right_img;
 static image roi_left_img;
-static image det  ;
-static image det_s;
-static image disp = {0};
 static VideoCapture cap;
 static float fps = 0;
 static float demo_thresh = 0;
@@ -44,8 +39,6 @@ static int frame_id;
 BBOX_tracker mid_tracker;
 BBOX_tracker right_tracker;
 BBOX_tracker left_tracker;
-
-static int demo_index = 0;
 vector<Rect2d> bbox_mid_draw;
 vector<Rect2d> bbox_right_draw;
 vector<Rect2d> bbox_left_draw;
@@ -99,22 +92,16 @@ IplImage *crop_IplImage(IplImage *src, CvRect roi){
 	return src_crop;
 }
 
-Mat crop_Mat(Mat src, Rect roi){
-	Mat src_crop = src(roi);
-	return src_crop;
-}
-
-
 void *fetch_in_thread(void *ptr){
 
 	double before = get_wall_time();
-	cap.read(cur_frame);
+	cap >> cur_frame;
 	double after = get_wall_time();
 	cout << "cv query frame cost " << 1000 * (after - before) << " ms" << endl;
 	before = after;
-	roi_mid_mat = crop_Mat(cur_frame, Rect(800, 500, 416, 416));
-	roi_right_mat = crop_Mat(cur_frame, Rect(1216, 500, 416, 416));
-	roi_left_mat = crop_Mat(cur_frame, Rect(384, 500, 416, 416));
+	roi_mid_mat = cur_frame(Rect(800, 500, 416, 416));
+	roi_right_mat = cur_frame(Rect(1216, 500, 416, 416));
+	roi_left_mat = cur_frame(Rect(384, 500, 416, 416));
 	after = get_wall_time();
 	cout << "crop opencv frame cost " << 1000 * (after - before) << " ms" << endl;
 	before = after;
@@ -138,7 +125,7 @@ void *fetch_in_thread(void *ptr){
 		roi_left_img = mat_to_image(roi_left_mat);
 	}
 	after = get_wall_time();
-	cout << "change opencv to image cost " << 1000 * (after - before) << " ms" << endl;
+	cout << "change opencv mat to image cost " << 1000 * (after - before) << " ms" << endl;
     return 0;
 }
 
@@ -268,7 +255,6 @@ double total_frame_cost = 0.;
 void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const char *filename, char **names, int classes, int frame_skip, char *prefix, float hier_thresh){
     //skip = frame_skip;
     image **alphabet = load_alphabet();
-    int delay = frame_skip;
     demo_names = names;
     demo_alphabet = alphabet;
     demo_classes = classes;
@@ -287,17 +273,15 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
     }else{
         cap = VideoCapture(cam_index);
     }
-    /* if(!cap) error("Couldn't connect to webcam.\n"); */
-    layer l = net.layers[net.n-1];
+    layer l = net.layers[net.n - 1];
     boxes = (box *)calloc(l.w*l.h*l.n, sizeof(box));
     probs = (float **)calloc(l.w*l.h*l.n, sizeof(float *));
     for(int j = 0; j < l.w*l.h*l.n; ++j) probs[j] = (float *)calloc(l.classes, sizeof(float));
 	pthread_t detect_mid_thread, detect_right_thread, detect_left_thread;
-	namedWindow("demo", WINDOW_NORMAL);
-	resizeWindow("demo", 640, 480);
+	/* namedWindow("demo", WINDOW_NORMAL); */
+	/* resizeWindow("demo", 640, 480); */
     double before = get_wall_time();
     while(1){
-		fps = (frame_id + 1.) / (total_frame_cost);
 		printf("\033[2J");
 		printf("\033[1;1H");
 		printf("[frame id:%d]\n", frame_id);
@@ -306,7 +290,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		//  create mid roi thread
 		if(pthread_create(&detect_mid_thread, 0, detect_mid_roi_in_thread, 0)) 
 			error("Thread creation failed");
-		//  create right roi thread
+		/* //  create right roi thread */
 		if(pthread_create(&detect_right_thread, 0, detect_right_roi_in_thread, 0)) 
 			error("Thread creation failed");
 		//  create left roi thread
@@ -318,20 +302,20 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
-		imshow("demo", cur_frame);
-		waitKey(1);
+		/* imshow("demo", cur_frame); */
+		/* waitKey(1); */
 		
 		frame_id += 1;
 		double after = get_wall_time();
 		double frame_cost = after - before;
+		fps = (frame_id + 1.) / (total_frame_cost);
 		cout << "this frame cost " << 1000 * frame_cost << " ms" << endl;
 		total_frame_cost += frame_cost;
 		before = after;
     }
 }
 #else
-void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const char *filename, char **names, int classes, int frame_skip, char *prefix, float hier_thresh)
-{
+void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const char *filename, char **names, int classes, int frame_skip, char *prefix, float hier_thresh){
     fprintf(stderr, "Demo needs OpenCV for webcam images.\n");
 }
 #endif
