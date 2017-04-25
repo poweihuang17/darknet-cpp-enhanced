@@ -39,7 +39,7 @@ EXEC_CPP=darknet-cpp
 SHARED_CPP=darknet-cpp-shared
 OBJDIR_CPP=./obj-cpp/
 OBJDIR_CPP_SHARED=./obj-cpp-shared/
-CC_CPP=g++
+CC_CPP=g++ -std=c++11
 CFLAGS_CPP=-Wno-write-strings
 
 NVCC=nvcc

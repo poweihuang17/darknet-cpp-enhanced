@@ -45,6 +45,7 @@ vector<Rect2d> bbox_left_draw;
 typedef struct detect_thread_data{
 	image roi_img;
 	Mat roi_mat;
+	BBOX_tracker tracker;
 	int x_offset;
 	int y_offset;
 	int frame_offset;
@@ -278,8 +279,8 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
     probs = (float **)calloc(l.w*l.h*l.n, sizeof(float *));
     for(int j = 0; j < l.w*l.h*l.n; ++j) probs[j] = (float *)calloc(l.classes, sizeof(float));
 	pthread_t detect_mid_thread, detect_right_thread, detect_left_thread;
-	/* namedWindow("demo", WINDOW_NORMAL); */
-	/* resizeWindow("demo", 640, 480); */
+	namedWindow("demo", WINDOW_NORMAL);
+	resizeWindow("demo", 640, 480);
     double before = get_wall_time();
     while(1){
 		printf("\033[2J");
@@ -288,6 +289,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		printf("FPS:%.1f\n", fps);
 		fetch_in_thread(0);
 		//  create mid roi thread
+		
 		if(pthread_create(&detect_mid_thread, 0, detect_mid_roi_in_thread, 0)) 
 			error("Thread creation failed");
 		/* //  create right roi thread */
@@ -302,8 +304,8 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
-		/* imshow("demo", cur_frame); */
-		/* waitKey(1); */
+		imshow("demo", cur_frame);
+		waitKey(1);
 		
 		frame_id += 1;
 		double after = get_wall_time();
