@@ -459,6 +459,7 @@ void show_image(image p, const char *name)
 
 #ifdef OPENCV
 
+
 image ipl_to_image(IplImage* src)
 {
     unsigned char *data = (unsigned char *)src->imageData;
@@ -517,18 +518,6 @@ image get_image_from_stream(CvCapture *cap)
     image im = ipl_to_image(src);
     rgbgr_image(im);
     return im;
-}
-
-image get_image_from_stream_demo(CvCapture *cap, IplImage **cur_frame, int keyframe)
-{
-    IplImage* src = cvQueryFrame(cap);
-	*cur_frame = src;
-	if(keyframe){
-		if (!src) return make_empty_image(0,0,0);
-    	image im = ipl_to_image(src);
-    	rgbgr_image(im);
-    	return im;
-	}
 }
 
 void save_image_jpg(image p, const char *name)
