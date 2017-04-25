@@ -20,15 +20,14 @@ typedef vector<Rect2d> BBOX_list;
 class BBOX_tracker{
 	public:
 		MultiTracker m_trackers;
-		Mat cur_frame_mat;
+		Mat m_roi;
 		BBOX_list objects;
 		BBOX_tracker();
 		void SetObjects(BBOX_list bbox_list);
 		void CleanObjects();
-		void SetFrame(Mat cur_frame);
+		void SetROI(Mat roi);
 		void InitTracker();
 		void update();
-		void draw_tracking();
 		double get_wall_time()
 		{
 			struct timeval time;

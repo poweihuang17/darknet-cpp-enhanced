@@ -473,14 +473,14 @@ image ipl_to_image(IplImage* src)
         exit(-1);
     }
     int i, j, k, count=0;;
-
-    for(k= 0; k < c; ++k){
-        for(i = 0; i < h; ++i){
-            for(j = 0; j < w; ++j){
-                out.data[count++] = data[i*step + j*c + k]/255.;
-            }
-        }
-    }
+	for(i = 0; i < h; ++i){
+		for(j = 0; j < w; ++j){
+			out.data[count] = data[i*step + j*c + 2] / 255.;
+			out.data[count + h*w] = data[i*step + j*c + 1] / 255.;
+			out.data[count + h*w*2] = data[i*step + j*c + 0] / 255.;
+			count++;
+		}
+	}
     return out;
 }
 
