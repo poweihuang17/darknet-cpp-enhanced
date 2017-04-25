@@ -13,7 +13,7 @@
 #endif
 
 #define FRAMES 3
-#define FREQ 3
+#define FREQ 10
 
 #ifdef OPENCV
 #include "opencv2/highgui/highgui_c.h"
@@ -82,9 +82,13 @@ IplImage *crop_IplImage(IplImage *src, CvRect roi){
 }
 
 
-void *fetch_in_thread(void *ptr)
-{
+void *fetch_in_thread(void *ptr){
+
+	double before = get_wall_time();
 	cur_frame = cvQueryFrame(cap);
+	double after = get_wall_time();
+	cout << "cv query frame cost " << 1000 * (after - before) << " ms" << endl;
+	before = after;
 	cur_frame_mat = cvarrToMat(cur_frame);
 	roi_mid_ipl = crop_IplImage(cur_frame, cvRect(800, 500, 416, 416));
 	roi_right_ipl = crop_IplImage(cur_frame, cvRect(1216, 500, 416, 416));
@@ -92,18 +96,30 @@ void *fetch_in_thread(void *ptr)
 	roi_mid_mat = cvarrToMat(roi_mid_ipl);
 	roi_right_mat = cvarrToMat(roi_right_ipl);
 	roi_left_mat = cvarrToMat(roi_left_ipl);
-
+	after = get_wall_time();
+	cout << "crop opencv frame cost " << 1000 * (after - before) << " ms" << endl;
+	before = after;
 	//  keyframe
-	if(frame_id % FREQ == 0){
+	if((frame_id) % FREQ == 0){
 		if (!cur_frame){
 			roi_mid_img = make_empty_image(0, 0, 0);
-			roi_right_img = make_empty_image(0, 0, 0);
-			roi_left_img = make_empty_image(0, 0, 0);
 		}
 		roi_mid_img = ipl_to_image(roi_mid_ipl);
+	}
+	else if((frame_id + 1) % FREQ == 0){
+		if (!cur_frame){
+			roi_right_img = make_empty_image(0, 0, 0);
+		}
 		roi_right_img = ipl_to_image(roi_right_ipl);
+	}
+	else if((frame_id + 2) % FREQ == 0){
+		if (!cur_frame){
+			roi_left_img = make_empty_image(0, 0, 0);
+		}
 		roi_left_img = ipl_to_image(roi_left_ipl);
 	}
+	after = get_wall_time();
+	cout << "change opencv to image cost " << 1000 * (after - before) << " ms" << endl;
     return 0;
 }
 
@@ -111,7 +127,10 @@ vector<Rect2d> detect_roi(image roi){
 	float nms = .4;
 	layer l = net.layers[net.n-1];
 	float *X = roi.data;
+	double before = get_wall_time();
 	network_predict(net, X);
+	double after = get_wall_time();
+	cout << "prediction cost " << 1000 * (after - before) << " ms" << endl;
 	if(l.type == DETECTION){
 		get_detection_boxes(l, 1, 1, demo_thresh, probs, boxes, 0);
 	} else if (l.type == REGION){
@@ -256,10 +275,15 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
     probs = (float **)calloc(l.w*l.h*l.n, sizeof(float *));
     for(int j = 0; j < l.w*l.h*l.n; ++j) probs[j] = (float *)calloc(l.classes, sizeof(float));
 	pthread_t detect_mid_thread, detect_right_thread, detect_left_thread;
-	namedWindow("demo", WINDOW_NORMAL);
-	resizeWindow("demo", 640, 480);
+	/* namedWindow("demo", WINDOW_NORMAL); */
+	/* resizeWindow("demo", 640, 480); */
     double before = get_wall_time();
     while(1){
+		fps = (frame_id + 1.) / (total_frame_cost);
+		printf("\033[2J");
+		printf("\033[1;1H");
+		printf("[frame id:%d]\n", frame_id);
+		printf("FPS:%.1f\n", fps);
 		fetch_in_thread(0);
 		//  create mid roi thread
 		if(pthread_create(&detect_mid_thread, 0, detect_mid_roi_in_thread, 0)) 
@@ -276,8 +300,8 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		rectangle(cur_frame_mat, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame_mat, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame_mat, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
-		imshow("demo", cur_frame_mat);
-		waitKey(1);
+		/* imshow("demo", cur_frame_mat); */
+		/* waitKey(1); */
 		cvReleaseImage(&roi_mid_ipl);
 		cvReleaseImage(&roi_left_ipl);
 		cvReleaseImage(&roi_right_ipl);
@@ -285,13 +309,8 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		frame_id += 1;
 		double after = get_wall_time();
 		double frame_cost = after - before;
-		total_frame_cost += frame_cost;
-		fps = (frame_id + 1.) / (total_frame_cost);
-		printf("\033[2J");
-		printf("\033[1;1H");
-		printf("[frame id:%d]\n", frame_id);
-		printf("FPS:%.1f\n", fps);
 		cout << "this frame cost " << 1000 * frame_cost << " ms" << endl;
+		total_frame_cost += frame_cost;
 		before = after;
     }
 }
