@@ -13,7 +13,7 @@
 #endif
 
 #define FRAMES 3
-#define FREQ 10
+#define FREQ 3
 
 #ifdef OPENCV
 #include "opencv2/highgui/highgui_c.h"
@@ -147,7 +147,7 @@ void *detect_mid_roi_in_thread(void *ptr){
 		//  track roi
 		mid_tracker.SetROI(roi_mid_mat);
 		mid_tracker.update();
-		bbox_mid_draw = mid_tracker.m_trackers.objects;
+		bbox_mid_draw = mid_tracker.GetObjects();
 		//  draw boxes
 		for(unsigned int i = 0; i < bbox_mid_draw.size(); i++){
 			bbox_mid_draw.at(i).x += 800;
@@ -181,7 +181,7 @@ void *detect_left_roi_in_thread(void *ptr){
 		//  track roi
 		left_tracker.SetROI(roi_left_mat);
 		left_tracker.update();
-		bbox_left_draw = left_tracker.m_trackers.objects;
+		bbox_left_draw = left_tracker.GetObjects();
 		//  draw boxes
 		for(unsigned int i = 0; i < bbox_left_draw.size(); i++){
 			bbox_left_draw.at(i).x += 384;
@@ -215,7 +215,7 @@ void *detect_right_roi_in_thread(void *ptr){
 		//  track roi
 		right_tracker.SetROI(roi_right_mat);
 		right_tracker.update();
-		bbox_right_draw = right_tracker.m_trackers.objects;
+		bbox_right_draw = right_tracker.GetObjects();
 		//  draw boxes
 		for(unsigned int i = 0; i < bbox_right_draw.size(); i++){
 			bbox_right_draw.at(i).x += 1216;
@@ -285,13 +285,13 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		frame_id += 1;
 		double after = get_wall_time();
 		double frame_cost = after - before;
-		cout << "this frame cost " << 1000 * frame_cost << " ms" << endl;
 		total_frame_cost += frame_cost;
 		fps = (frame_id + 1.) / (total_frame_cost);
 		printf("\033[2J");
 		printf("\033[1;1H");
 		printf("[frame id:%d]\n", frame_id);
 		printf("FPS:%.1f\n", fps);
+		cout << "this frame cost " << 1000 * frame_cost << " ms" << endl;
 		before = after;
     }
 }

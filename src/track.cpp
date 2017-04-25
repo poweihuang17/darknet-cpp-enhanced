@@ -9,26 +9,32 @@ BBOX_tracker::BBOX_tracker(){
 }
 
 void BBOX_tracker::SetObjects(BBOX_list bbox_list){
-	objects = bbox_list;
+	m_objects = bbox_list;
+}
+
+BBOX_list BBOX_tracker::GetObjects(){
+	return m_objects;
 }
 
 void BBOX_tracker::CleanObjects(){
-	objects.clear();
+	m_objects.clear();
 }
 
 void BBOX_tracker::SetROI(Mat roi){
 	m_roi = roi;
 }
 
+Mat BBOX_tracker::GetROI(){
+	return m_roi; 
+}
+
 void BBOX_tracker::InitTracker(){
 	m_trackers.objects.clear();
-	m_trackers.add(m_roi, objects);
+	m_trackers.add(m_roi, m_objects);
 }
 
 void BBOX_tracker::update(){
-	double before = get_wall_time();
 	m_trackers.update(m_roi);
-	double after = get_wall_time();
-	cout << "tracking objects cost " << 1000 * (after - before) << "ms" << endl;
+	m_objects = m_trackers.objects;
 }
 
