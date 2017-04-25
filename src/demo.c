@@ -29,9 +29,11 @@ static network net;
 static IplImage *cur_frame;
 static Mat cur_frame_mat;
 static Mat roi_mid_mat;
+static Mat roi_right_mat;
 static image in   ;
 static image in_s ;
 static image roi_mid_img;
+static image roi_right_img;
 static image det  ;
 static image det_s;
 static image disp = {0};
@@ -43,11 +45,16 @@ static int frame_id;
 BBOX_tracker mid_tracker;
 BBOX_tracker right_tracker;
 
-static float *predictions[FRAMES];
 static int demo_index = 0;
-static image images[FRAMES];
-static float *avg;
-vector<Rect2d> bbox_draw;
+vector<Rect2d> bbox_mid_draw;
+vector<Rect2d> bbox_right_draw;
+typedef struct detect_thread_data{
+	image roi_img;
+	Mat roi_mat;
+	int x_offset;
+	int y_offset;
+	int frame_offset;
+}det_thread_arg;
 
 image ipl_to_image(IplImage* src);
 image get_image_from_stream_demo(CvCapture *cap, IplImage **cur_frame, int keyframe);
@@ -79,42 +86,102 @@ void *fetch_in_thread(void *ptr)
 	IplImage *roi_mid_ipl = crop_IplImage(cur_frame, cvRect(800, 500, 416, 416));
 	IplImage *roi_right_ipl = crop_IplImage(cur_frame, cvRect(1216, 500, 416, 416));
 	roi_mid_mat = cvarrToMat(roi_mid_ipl);
+	roi_right_mat = cvarrToMat(roi_right_ipl);
 
 	//  keyframe
 	if(frame_id % FREQ == 0){
-		image im;
-		if (!cur_frame) im = make_empty_image(0, 0, 0);
-		im = ipl_to_image(roi_mid_ipl);
-		roi_mid_img = im;
+		if (!cur_frame){
+			roi_mid_img = make_empty_image(0, 0, 0);
+			roi_right_img = make_empty_image(0, 0, 0);
+		}
+		roi_mid_img = ipl_to_image(roi_mid_ipl);
+		roi_right_img = ipl_to_image(roi_right_ipl);
 	}
     return 0;
 }
 
-void *detect_in_thread(void *ptr)
-{
-    float nms = .4;
-    layer l = net.layers[net.n-1];
-    float *X = roi_mid_img.data;
-	double before = get_wall_time();
-    float *prediction = network_predict(net, X);
-	double after = get_wall_time();
-	cout <<"predict frame cost " << 1000 * (after - before) << " ms" << endl;
-
-    if(l.type == DETECTION){
-        get_detection_boxes(l, 1, 1, demo_thresh, probs, boxes, 0);
-    } else if (l.type == REGION){
-        get_region_boxes(l, 1, 1, demo_thresh, probs, boxes, 0, 0, demo_hier_thresh);
-    } else {
-        error("Last layer must produce detections\n");
-    }
+vector<Rect2d> detect_roi(image roi){
+	float nms = .4;
+	layer l = net.layers[net.n-1];
+	float *X = roi.data;
+	network_predict(net, X);
+	if(l.type == DETECTION){
+		get_detection_boxes(l, 1, 1, demo_thresh, probs, boxes, 0);
+	} else if (l.type == REGION){
+		get_region_boxes(l, 1, 1, demo_thresh, probs, boxes, 0, 0, demo_hier_thresh);
+	} else {
+		error("Last layer must produce detections\n");
+	}
 	if (nms > 0) do_nms(boxes, probs, l.w*l.h*l.n, l.classes, nms);
-    printf("Objects:\n");
+	vector<Rect2d> bboxes = process_detections(roi, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
+	return bboxes;
+}
 
-	vector<Rect2d> bboxes;
-    bboxes = process_detections(roi_mid_img, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
-	bbox_draw = bboxes;
-    free_image(roi_mid_img);
+void *detect_mid_roi_in_thread(void *ptr){
+	if((frame_id) % FREQ == 0){
+		//----- keyframe-----//
+		//  detect roi
+		bbox_mid_draw = detect_roi(roi_mid_img);
+		free_image(roi_mid_img);
+		//  initial tracker
+		mid_tracker = BBOX_tracker();
+		mid_tracker.SetObjects(bbox_mid_draw);
+		mid_tracker.SetROI(roi_mid_mat);
+		mid_tracker.InitTracker();
+		//  draw boxes
+		for(unsigned int i = 0; i < bbox_mid_draw.size(); i++){
+			bbox_mid_draw.at(i).x += 800;
+			bbox_mid_draw.at(i).y += 500;
+			rectangle(cur_frame_mat, bbox_mid_draw[i], Scalar(0, 255, 0), 2, 1);
+		}
+	}
+	else{
+		//-----non-keyframe-----//
+		//  track roi
+		mid_tracker.SetROI(roi_mid_mat);
+		mid_tracker.update();
+		bbox_mid_draw = mid_tracker.m_trackers.objects;
+		//  draw boxes
+		for(unsigned int i = 0; i < bbox_mid_draw.size(); i++){
+			bbox_mid_draw.at(i).x += 800;
+			bbox_mid_draw.at(i).y += 500;
+			rectangle(cur_frame_mat, bbox_mid_draw[i], Scalar(0, 0, 255), 2, 1);
+		}
+	}
+    return 0;
+}
 
+void *detect_right_roi_in_thread(void *ptr){
+	if((frame_id + 1) % FREQ == 0){
+		//----- keyframe-----//
+		//  detect roi
+		bbox_right_draw = detect_roi(roi_right_img);
+		free_image(roi_right_img);
+		//  initial tracker
+		right_tracker = BBOX_tracker();
+		right_tracker.SetObjects(bbox_right_draw);
+		right_tracker.SetROI(roi_right_mat);
+		right_tracker.InitTracker();
+		//  draw boxes
+		for(unsigned int i = 0; i < bbox_right_draw.size(); i++){
+			bbox_right_draw.at(i).x += 1216;
+			bbox_right_draw.at(i).y += 500;
+			rectangle(cur_frame_mat, bbox_right_draw[i], Scalar(0, 255, 0), 2, 1);
+		}
+	}
+	else{
+		//-----non-keyframe-----//
+		//  track roi
+		right_tracker.SetROI(roi_right_mat);
+		right_tracker.update();
+		bbox_right_draw = right_tracker.m_trackers.objects;
+		//  draw boxes
+		for(unsigned int i = 0; i < bbox_right_draw.size(); i++){
+			bbox_right_draw.at(i).x += 1216;
+			bbox_right_draw.at(i).y += 500;
+			rectangle(cur_frame_mat, bbox_right_draw[i], Scalar(0, 0, 255), 2, 1);
+		}
+	}
     return 0;
 }
 
@@ -150,17 +217,13 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
     layer l = net.layers[net.n-1];
     int j;
 
-    avg = (float *) calloc(l.outputs, sizeof(float));
-    for(j = 0; j < FRAMES; ++j) predictions[j] = (float *) calloc(l.outputs, sizeof(float));
-    for(j = 0; j < FRAMES; ++j) images[j] = make_image(1,1,3);
-
     boxes = (box *)calloc(l.w*l.h*l.n, sizeof(box));
     probs = (float **)calloc(l.w*l.h*l.n, sizeof(float *));
     for(j = 0; j < l.w*l.h*l.n; ++j) probs[j] = (float *)calloc(l.classes, sizeof(float));
 
     pthread_t fetch_thread;
     pthread_t detect_thread;
-	pthread_t detect_mid_thread, detect_right_thread;
+	pthread_t detect_mid_thread, detect_right_thread, track_mid_thread, track_right_thread;
 
     int count = 0;
 	namedWindow("demo", WINDOW_NORMAL);
@@ -168,64 +231,20 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 	
     double before = get_wall_time();
     while(1){
-        if(0){
-            if(pthread_create(&fetch_thread, 0, fetch_in_thread, 0)) error("Thread creation failed");
-            if(pthread_create(&detect_thread, 0, detect_in_thread, 0)) error("Thread creation failed");
-
-            if(!prefix){
-                show_image(disp, "Demo");
-                int c = cvWaitKey(1);
-                if (c == 10){
-                    if(frame_skip == 0) frame_skip = 60;
-                    else if(frame_skip == 4) frame_skip = 0;
-                    else if(frame_skip == 60) frame_skip = 4;   
-                    else frame_skip = 0;
-                }
-            }else{
-                char buff[256];
-                sprintf(buff, "%s_%08d", prefix, count);
-                save_image(disp, buff);
-            }
-
-            pthread_join(fetch_thread, 0);
-            pthread_join(detect_thread, 0);
-
-            if(delay == 0){
-                free_image(disp);
-                disp  = det;
-            }
-            det   = in;
-            det_s = in_s;
-        }else{
-            fetch_in_thread(0);
-			//  keyframe
-			if(frame_id % FREQ == 0){
-				mid_tracker = BBOX_tracker();
-				if(pthread_create(&detect_mid_thread, 0, detect_in_thread, 0)) error("Thread creation failed");
-				pthread_join(detect_mid_thread, 0);
-				for(unsigned int i = 0; i < bbox_draw.size(); i++){
-					bbox_draw.at(i).x += 800;
-					bbox_draw.at(i).y += 500;
-					rectangle(cur_frame_mat, bbox_draw[i], Scalar(0, 255, 0), 2, 1);
-				}
-			}
-			// non-keyframe
-			else{
-				mid_tracker.SetROI(roi_mid_mat);
-				mid_tracker.update();
-				bbox_draw = mid_tracker.m_trackers.objects;
-				for(unsigned int i = 0; i < bbox_draw.size(); i++){
-					bbox_draw.at(i).x += 800;
-					bbox_draw.at(i).y += 500;
-					rectangle(cur_frame_mat, bbox_draw[i], Scalar(0, 0, 255), 2, 1);
-				}
-			}
-			rectangle(cur_frame_mat, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
-			rectangle(cur_frame_mat, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
-			imshow("demo", cur_frame_mat);
-			waitKey(1);
-			frame_id += 1;
-        }
+		fetch_in_thread(0);
+		//  create mid roi thread
+		if(pthread_create(&detect_mid_thread, 0, detect_mid_roi_in_thread, 0)) 
+			error("Thread creation failed");
+		if(pthread_create(&detect_right_thread, 0, detect_right_roi_in_thread, 0)) 
+			error("Thread creation failed");
+		pthread_join(detect_mid_thread, 0);
+		pthread_join(detect_right_thread, 0);
+		rectangle(cur_frame_mat, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
+		rectangle(cur_frame_mat, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
+		imshow("demo", cur_frame_mat);
+		waitKey(1);
+		frame_id += 1;
+        
 		double after = get_wall_time();
 		double frame_cost = after - before;
 		cout << "this frame cost " << 1000 * frame_cost << " ms" << endl;
@@ -270,9 +289,5 @@ vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, f
 			tmp_bbox_list.push_back(bbox);
         }
     }
-	mid_tracker.CleanObjects();
-	mid_tracker.SetObjects(tmp_bbox_list);
-	mid_tracker.SetROI(roi_mid_mat);
-	mid_tracker.InitTracker();
 	return tmp_bbox_list;
 }
