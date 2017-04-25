@@ -28,12 +28,15 @@ static box *boxes;
 static network net;
 static IplImage *cur_frame;
 static Mat cur_frame_mat;
+static IplImage *roi_mid_ipl;
+static IplImage *roi_right_ipl;
+static IplImage *roi_left_ipl;
 static Mat roi_mid_mat;
 static Mat roi_right_mat;
-static image in   ;
-static image in_s ;
+static Mat roi_left_mat;
 static image roi_mid_img;
 static image roi_right_img;
+static image roi_left_img;
 static image det  ;
 static image det_s;
 static image disp = {0};
@@ -44,10 +47,12 @@ static float demo_hier_thresh = .5;
 static int frame_id;
 BBOX_tracker mid_tracker;
 BBOX_tracker right_tracker;
+BBOX_tracker left_tracker;
 
 static int demo_index = 0;
 vector<Rect2d> bbox_mid_draw;
 vector<Rect2d> bbox_right_draw;
+vector<Rect2d> bbox_left_draw;
 typedef struct detect_thread_data{
 	image roi_img;
 	Mat roi_mat;
@@ -79,23 +84,25 @@ IplImage *crop_IplImage(IplImage *src, CvRect roi){
 
 void *fetch_in_thread(void *ptr)
 {
-	if(!cur_frame)
-		cvReleaseImage(&cur_frame);
 	cur_frame = cvQueryFrame(cap);
 	cur_frame_mat = cvarrToMat(cur_frame);
-	IplImage *roi_mid_ipl = crop_IplImage(cur_frame, cvRect(800, 500, 416, 416));
-	IplImage *roi_right_ipl = crop_IplImage(cur_frame, cvRect(1216, 500, 416, 416));
+	roi_mid_ipl = crop_IplImage(cur_frame, cvRect(800, 500, 416, 416));
+	roi_right_ipl = crop_IplImage(cur_frame, cvRect(1216, 500, 416, 416));
+	roi_left_ipl = crop_IplImage(cur_frame, cvRect(384, 500, 416, 416));
 	roi_mid_mat = cvarrToMat(roi_mid_ipl);
 	roi_right_mat = cvarrToMat(roi_right_ipl);
+	roi_left_mat = cvarrToMat(roi_left_ipl);
 
 	//  keyframe
 	if(frame_id % FREQ == 0){
 		if (!cur_frame){
 			roi_mid_img = make_empty_image(0, 0, 0);
 			roi_right_img = make_empty_image(0, 0, 0);
+			roi_left_img = make_empty_image(0, 0, 0);
 		}
 		roi_mid_img = ipl_to_image(roi_mid_ipl);
 		roi_right_img = ipl_to_image(roi_right_ipl);
+		roi_left_img = ipl_to_image(roi_left_ipl);
 	}
     return 0;
 }
@@ -146,6 +153,40 @@ void *detect_mid_roi_in_thread(void *ptr){
 			bbox_mid_draw.at(i).x += 800;
 			bbox_mid_draw.at(i).y += 500;
 			rectangle(cur_frame_mat, bbox_mid_draw[i], Scalar(0, 0, 255), 2, 1);
+		}
+	}
+    return 0;
+}
+
+void *detect_left_roi_in_thread(void *ptr){
+	if((frame_id + 2) % FREQ == 0){
+		//----- keyframe-----//
+		//  detect roi
+		bbox_left_draw = detect_roi(roi_left_img);
+		free_image(roi_left_img);
+		//  initial tracker
+		left_tracker = BBOX_tracker();
+		left_tracker.SetObjects(bbox_left_draw);
+		left_tracker.SetROI(roi_left_mat);
+		left_tracker.InitTracker();
+		//  draw boxes
+		for(unsigned int i = 0; i < bbox_left_draw.size(); i++){
+			bbox_left_draw.at(i).x += 384;
+			bbox_left_draw.at(i).y += 500;
+			rectangle(cur_frame_mat, bbox_left_draw[i], Scalar(0, 255, 0), 2, 1);
+		}
+	}
+	else{
+		//-----non-keyframe-----//
+		//  track roi
+		left_tracker.SetROI(roi_left_mat);
+		left_tracker.update();
+		bbox_left_draw = left_tracker.m_trackers.objects;
+		//  draw boxes
+		for(unsigned int i = 0; i < bbox_left_draw.size(); i++){
+			bbox_left_draw.at(i).x += 384;
+			bbox_left_draw.at(i).y += 500;
+			rectangle(cur_frame_mat, bbox_left_draw[i], Scalar(0, 0, 255), 2, 1);
 		}
 	}
     return 0;
@@ -202,49 +243,46 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
         load_weights(&net, weightfile);
     }
     set_batch_network(&net, 1);
-
     srand(2222222);
-
     if(filename){
         printf("video file: %s\n", filename);
         cap = cvCaptureFromFile(filename);
     }else{
         cap = cvCaptureFromCAM(cam_index);
     }
-
     if(!cap) error("Couldn't connect to webcam.\n");
-
     layer l = net.layers[net.n-1];
-    int j;
-
     boxes = (box *)calloc(l.w*l.h*l.n, sizeof(box));
     probs = (float **)calloc(l.w*l.h*l.n, sizeof(float *));
-    for(j = 0; j < l.w*l.h*l.n; ++j) probs[j] = (float *)calloc(l.classes, sizeof(float));
-
-    pthread_t fetch_thread;
-    pthread_t detect_thread;
-	pthread_t detect_mid_thread, detect_right_thread, track_mid_thread, track_right_thread;
-
-    int count = 0;
+    for(int j = 0; j < l.w*l.h*l.n; ++j) probs[j] = (float *)calloc(l.classes, sizeof(float));
+	pthread_t detect_mid_thread, detect_right_thread, detect_left_thread;
 	namedWindow("demo", WINDOW_NORMAL);
 	resizeWindow("demo", 640, 480);
-	
     double before = get_wall_time();
     while(1){
 		fetch_in_thread(0);
 		//  create mid roi thread
 		if(pthread_create(&detect_mid_thread, 0, detect_mid_roi_in_thread, 0)) 
 			error("Thread creation failed");
+		//  create right roi thread
 		if(pthread_create(&detect_right_thread, 0, detect_right_roi_in_thread, 0)) 
+			error("Thread creation failed");
+		//  create left roi thread
+		if(pthread_create(&detect_left_thread, 0, detect_left_roi_in_thread, 0)) 
 			error("Thread creation failed");
 		pthread_join(detect_mid_thread, 0);
 		pthread_join(detect_right_thread, 0);
+		pthread_join(detect_left_thread, 0);
+		rectangle(cur_frame_mat, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame_mat, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame_mat, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
 		imshow("demo", cur_frame_mat);
 		waitKey(1);
+		cvReleaseImage(&roi_mid_ipl);
+		cvReleaseImage(&roi_left_ipl);
+		cvReleaseImage(&roi_right_ipl);
+		
 		frame_id += 1;
-        
 		double after = get_wall_time();
 		double frame_cost = after - before;
 		cout << "this frame cost " << 1000 * frame_cost << " ms" << endl;
