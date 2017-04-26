@@ -12,7 +12,7 @@
 #include <sys/time.h>
 #endif
 
-#define FREQ 10
+#define FREQ 1
 
 #ifdef OPENCV
 #include "opencv2/highgui/highgui_c.h"
@@ -113,13 +113,13 @@ void *fetch_in_thread(void *ptr){
 		}
 		roi_mid_img = mat_to_image(roi_mid_mat);
 	}
-	else if((frame_id + 1) % FREQ == 0){
+	if((frame_id + 1) % FREQ == 0){
 		if (!cur_frame.data){
 			roi_right_img = make_empty_image(0, 0, 0);
 		}
 		roi_right_img = mat_to_image(roi_right_mat);
 	}
-	else if((frame_id + 2) % FREQ == 0){
+	if((frame_id + 2) % FREQ == 0){
 		if (!cur_frame.data){
 			roi_left_img = make_empty_image(0, 0, 0);
 		}
@@ -288,19 +288,24 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		printf("[frame id:%d]\n", frame_id);
 		printf("FPS:%.1f\n", fps);
 		fetch_in_thread(0);
-		//  create mid roi thread
-		
-		if(pthread_create(&detect_mid_thread, 0, detect_mid_roi_in_thread, 0)) 
-			error("Thread creation failed");
-		/* //  create right roi thread */
-		if(pthread_create(&detect_right_thread, 0, detect_right_roi_in_thread, 0)) 
-			error("Thread creation failed");
-		//  create left roi thread
-		if(pthread_create(&detect_left_thread, 0, detect_left_roi_in_thread, 0)) 
-			error("Thread creation failed");
-		pthread_join(detect_mid_thread, 0);
-		pthread_join(detect_right_thread, 0);
-		pthread_join(detect_left_thread, 0);
+		if(0){
+			//  create mid roi thread
+			if(pthread_create(&detect_mid_thread, 0, detect_mid_roi_in_thread, 0)) 
+				error("Thread creation failed");
+			//  create right roi thread
+			if(pthread_create(&detect_right_thread, 0, detect_right_roi_in_thread, 0)) 
+				error("Thread creation failed");
+			//  create left roi thread
+			if(pthread_create(&detect_left_thread, 0, detect_left_roi_in_thread, 0)) 
+				error("Thread creation failed");
+			pthread_join(detect_mid_thread, 0);
+			pthread_join(detect_right_thread, 0);
+			pthread_join(detect_left_thread, 0);
+		}else{
+			detect_mid_roi_in_thread(0);
+			detect_right_roi_in_thread(0);
+			detect_left_roi_in_thread(0);
+		}
 		rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
