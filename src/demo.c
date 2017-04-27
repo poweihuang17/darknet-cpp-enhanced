@@ -12,7 +12,7 @@
 #include <sys/time.h>
 #endif
 
-#define FREQ 1
+#define FREQ 30
 
 #ifdef OPENCV
 #include "opencv2/highgui/highgui_c.h"
@@ -288,7 +288,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		printf("[frame id:%d]\n", frame_id);
 		printf("FPS:%.1f\n", fps);
 		fetch_in_thread(0);
-		if(0){
+		if(1){
 			//  create mid roi thread
 			if(pthread_create(&detect_mid_thread, 0, detect_mid_roi_in_thread, 0)) 
 				error("Thread creation failed");
