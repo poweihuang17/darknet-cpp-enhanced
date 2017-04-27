@@ -267,19 +267,11 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 			pthread_join(detect_mid_thread, 0);
 			free_image(cur_frame_img);
 		}
-<<<<<<< HEAD
-		rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1);
-		rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
-		rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
-		/* imshow("demo", cur_frame); */
-		/* waitKey(1); */
-=======
 		/* rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1); */
 		/* rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1); */
 		/* rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1); */
 		imshow("demo", cur_frame);
 		waitKey(1);
->>>>>>> 76a4e227fdddf6087f61ef684b137fe143a47ee0
 		frame_id += 1;
 		double after = get_wall_time();
 		double frame_cost = after - before;
