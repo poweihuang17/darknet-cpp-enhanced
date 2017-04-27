@@ -12,7 +12,7 @@
 #include <sys/time.h>
 #endif
 
-#define FREQ 30
+#define FREQ 3
 
 #ifdef OPENCV
 #include "opencv2/highgui/highgui_c.h"
@@ -39,13 +39,10 @@ static int frame_id;
 BBOX_tracker mid_tracker;
 BBOX_tracker right_tracker;
 BBOX_tracker left_tracker;
-vector<Rect2d> bbox_mid_draw;
-vector<Rect2d> bbox_right_draw;
-vector<Rect2d> bbox_left_draw;
 typedef struct detect_thread_data{
 	image roi_img;
 	Mat roi_mat;
-	BBOX_tracker tracker;
+	BBOX_tracker *tracker;
 	int x_offset;
 	int y_offset;
 	int frame_offset;
@@ -150,103 +147,36 @@ vector<Rect2d> detect_roi(image roi){
 	return bboxes;
 }
 
-void *detect_mid_roi_in_thread(void *ptr){
-	if((frame_id) % FREQ == 0){
+void *detect_roi_in_thread(void *ptr){
+	det_thread_arg arg = *(det_thread_arg *)ptr;
+	if((frame_id + arg.frame_offset) % FREQ == 0){
 		//----- keyframe-----//
 		//  detect roi
-		bbox_mid_draw = detect_roi(roi_mid_img);
-		free_image(roi_mid_img);
+		vector<Rect2d> bbox_draw = detect_roi(arg.roi_img);
+		free_image(arg.roi_img);
 		//  initial tracker
-		mid_tracker = BBOX_tracker();
-		mid_tracker.SetObjects(bbox_mid_draw);
-		mid_tracker.SetROI(roi_mid_mat);
-		mid_tracker.InitTracker();
+		*arg.tracker = BBOX_tracker();
+		arg.tracker->SetObjects(bbox_draw);
+		arg.tracker->SetROI(arg.roi_mat);
+		arg.tracker->InitTracker();
 		//  draw boxes
-		for(unsigned int i = 0; i < bbox_mid_draw.size(); i++){
-			bbox_mid_draw.at(i).x += 800;
-			bbox_mid_draw.at(i).y += 500;
-			rectangle(cur_frame, bbox_mid_draw[i], Scalar(0, 255, 0), 2, 1);
+		for(unsigned int i = 0; i < bbox_draw.size(); i++){
+			bbox_draw.at(i).x += arg.x_offset;
+			bbox_draw.at(i).y += arg.y_offset;
+			rectangle(cur_frame, bbox_draw[i], Scalar(0, 255, 0), 2, 1);
 		}
 	}
 	else{
 		//-----non-keyframe-----//
 		//  track roi
-		mid_tracker.SetROI(roi_mid_mat);
-		mid_tracker.update();
-		bbox_mid_draw = mid_tracker.GetObjects();
+		arg.tracker->SetROI(arg.roi_mat);
+		arg.tracker->update();
+		vector<Rect2d> bbox_draw = arg.tracker->GetObjects();
 		//  draw boxes
-		for(unsigned int i = 0; i < bbox_mid_draw.size(); i++){
-			bbox_mid_draw.at(i).x += 800;
-			bbox_mid_draw.at(i).y += 500;
-			rectangle(cur_frame, bbox_mid_draw[i], Scalar(0, 0, 255), 2, 1);
-		}
-	}
-    return 0;
-}
-
-void *detect_left_roi_in_thread(void *ptr){
-	if((frame_id + 2) % FREQ == 0){
-		//----- keyframe-----//
-		//  detect roi
-		bbox_left_draw = detect_roi(roi_left_img);
-		free_image(roi_left_img);
-		//  initial tracker
-		left_tracker = BBOX_tracker();
-		left_tracker.SetObjects(bbox_left_draw);
-		left_tracker.SetROI(roi_left_mat);
-		left_tracker.InitTracker();
-		//  draw boxes
-		for(unsigned int i = 0; i < bbox_left_draw.size(); i++){
-			bbox_left_draw.at(i).x += 384;
-			bbox_left_draw.at(i).y += 500;
-			rectangle(cur_frame, bbox_left_draw[i], Scalar(0, 255, 0), 2, 1);
-		}
-	}
-	else{
-		//-----non-keyframe-----//
-		//  track roi
-		left_tracker.SetROI(roi_left_mat);
-		left_tracker.update();
-		bbox_left_draw = left_tracker.GetObjects();
-		//  draw boxes
-		for(unsigned int i = 0; i < bbox_left_draw.size(); i++){
-			bbox_left_draw.at(i).x += 384;
-			bbox_left_draw.at(i).y += 500;
-			rectangle(cur_frame, bbox_left_draw[i], Scalar(0, 0, 255), 2, 1);
-		}
-	}
-    return 0;
-}
-
-void *detect_right_roi_in_thread(void *ptr){
-	if((frame_id + 1) % FREQ == 0){
-		//----- keyframe-----//
-		//  detect roi
-		bbox_right_draw = detect_roi(roi_right_img);
-		free_image(roi_right_img);
-		//  initial tracker
-		right_tracker = BBOX_tracker();
-		right_tracker.SetObjects(bbox_right_draw);
-		right_tracker.SetROI(roi_right_mat);
-		right_tracker.InitTracker();
-		//  draw boxes
-		for(unsigned int i = 0; i < bbox_right_draw.size(); i++){
-			bbox_right_draw.at(i).x += 1216;
-			bbox_right_draw.at(i).y += 500;
-			rectangle(cur_frame, bbox_right_draw[i], Scalar(0, 255, 0), 2, 1);
-		}
-	}
-	else{
-		//-----non-keyframe-----//
-		//  track roi
-		right_tracker.SetROI(roi_right_mat);
-		right_tracker.update();
-		bbox_right_draw = right_tracker.GetObjects();
-		//  draw boxes
-		for(unsigned int i = 0; i < bbox_right_draw.size(); i++){
-			bbox_right_draw.at(i).x += 1216;
-			bbox_right_draw.at(i).y += 500;
-			rectangle(cur_frame, bbox_right_draw[i], Scalar(0, 0, 255), 2, 1);
+		for(unsigned int i = 0; i < bbox_draw.size(); i++){
+			bbox_draw.at(i).x += arg.x_offset;
+			bbox_draw.at(i).y += arg.y_offset;
+			rectangle(cur_frame, bbox_draw[i], Scalar(0, 0, 255), 2, 1);
 		}
 	}
     return 0;
@@ -290,28 +220,45 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		fetch_in_thread(0);
 		if(1){
 			//  create mid roi thread
-			if(pthread_create(&detect_mid_thread, 0, detect_mid_roi_in_thread, 0)) 
-				error("Thread creation failed");
+			det_thread_arg mid_arg;
+			mid_arg.roi_img = roi_mid_img;
+			mid_arg.roi_mat = roi_mid_mat;
+			mid_arg.tracker = &mid_tracker;
+			mid_arg.x_offset = 800;
+			mid_arg.y_offset = 500;
+			mid_arg.frame_offset = 0;
+			pthread_create(&detect_mid_thread, 0, detect_roi_in_thread, (void *)&mid_arg);
 			//  create right roi thread
-			if(pthread_create(&detect_right_thread, 0, detect_right_roi_in_thread, 0)) 
-				error("Thread creation failed");
+			det_thread_arg right_arg;
+			right_arg.roi_img = roi_right_img;
+			right_arg.roi_mat = roi_right_mat;
+			right_arg.tracker = &right_tracker;
+			right_arg.x_offset = 1216;
+			right_arg.y_offset = 500;
+			right_arg.frame_offset = 1;
+			pthread_create(&detect_right_thread, 0, detect_roi_in_thread, (void *)&right_arg);
 			//  create left roi thread
-			if(pthread_create(&detect_left_thread, 0, detect_left_roi_in_thread, 0)) 
-				error("Thread creation failed");
+			det_thread_arg left_arg;
+			left_arg.roi_img = roi_left_img;
+			left_arg.roi_mat = roi_left_mat;
+			left_arg.tracker = &left_tracker;
+			left_arg.x_offset = 1632;
+			left_arg.y_offset = 500;
+			left_arg.frame_offset = 2;
+			pthread_create(&detect_left_thread, 0, detect_roi_in_thread, (void *)&left_arg);
 			pthread_join(detect_mid_thread, 0);
 			pthread_join(detect_right_thread, 0);
 			pthread_join(detect_left_thread, 0);
 		}else{
-			detect_mid_roi_in_thread(0);
-			detect_right_roi_in_thread(0);
-			detect_left_roi_in_thread(0);
+			detect_roi_in_thread(0);
+			detect_roi_in_thread(0);
+			detect_roi_in_thread(0);
 		}
 		rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
 		imshow("demo", cur_frame);
 		waitKey(1);
-		
 		frame_id += 1;
 		double after = get_wall_time();
 		double frame_cost = after - before;
