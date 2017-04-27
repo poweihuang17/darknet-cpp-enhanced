@@ -12,7 +12,7 @@
 #include <sys/time.h>
 #endif
 
-#define FREQ 30
+#define FREQ 1
 
 #ifdef OPENCV
 #include "opencv2/highgui/highgui_c.h"
@@ -31,6 +31,9 @@ static Mat roi_left_mat;
 static image roi_mid_img;
 static image roi_right_img;
 static image roi_left_img;
+static image cur_frame_img;
+static image cur_frame_img_s;
+
 static VideoCapture cap;
 static float fps = 0;
 static float demo_thresh = 0;
@@ -103,6 +106,8 @@ void *fetch_in_thread(void *ptr){
 	after = get_wall_time();
 	cout << "crop opencv frame cost " << 1000 * (after - before) << " ms" << endl;
 	before = after;
+	cur_frame_img = mat_to_image(cur_frame);
+	cur_frame_img_s = resize_image(cur_frame_img, 416, 416);
 	//  keyframe
 	if((frame_id) % FREQ == 0){
 		if (!cur_frame.data){
@@ -143,7 +148,7 @@ vector<Rect2d> detect_roi(image roi){
 		error("Last layer must produce detections\n");
 	}
 	if (nms > 0) do_nms(boxes, probs, l.w*l.h*l.n, l.classes, nms);
-	vector<Rect2d> bboxes = process_detections(roi, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
+	vector<Rect2d> bboxes = process_detections(cur_frame_img, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
 	return bboxes;
 }
 
@@ -210,7 +215,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
     for(int j = 0; j < l.w*l.h*l.n; ++j) probs[j] = (float *)calloc(l.classes, sizeof(float));
 	pthread_t detect_mid_thread, detect_right_thread, detect_left_thread;
 	namedWindow("demo", WINDOW_NORMAL);
-	resizeWindow("demo", 640, 480);
+	resizeWindow("demo", 1280, 720);
     double before = get_wall_time();
     while(1){
 		printf("\033[2J");
@@ -218,7 +223,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		printf("[frame id:%d]\n", frame_id);
 		printf("FPS:%.1f\n", fps);
 		fetch_in_thread(0);
-		if(1){
+		if(0){
 			//  create mid roi thread
 			det_thread_arg mid_arg;
 			mid_arg.roi_img = roi_mid_img;
@@ -246,19 +251,35 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 			left_arg.y_offset = 500;
 			left_arg.frame_offset = 2;
 			pthread_create(&detect_left_thread, 0, detect_roi_in_thread, (void *)&left_arg);
+			//  waiting for thread completion
 			pthread_join(detect_mid_thread, 0);
 			pthread_join(detect_right_thread, 0);
 			pthread_join(detect_left_thread, 0);
 		}else{
-			detect_roi_in_thread(0);
-			detect_roi_in_thread(0);
-			detect_roi_in_thread(0);
+			det_thread_arg mid_arg;
+			mid_arg.roi_img = cur_frame_img_s;
+			/* mid_arg.roi_mat = roi_mid_mat; */
+			mid_arg.tracker = &mid_tracker;
+			mid_arg.x_offset = 0;
+			mid_arg.y_offset = 0;
+			mid_arg.frame_offset = 0;
+			pthread_create(&detect_mid_thread, 0, detect_roi_in_thread, (void *)&mid_arg);
+			pthread_join(detect_mid_thread, 0);
+			free_image(cur_frame_img);
 		}
+<<<<<<< HEAD
 		rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
 		/* imshow("demo", cur_frame); */
 		/* waitKey(1); */
+=======
+		/* rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1); */
+		/* rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1); */
+		/* rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1); */
+		imshow("demo", cur_frame);
+		waitKey(1);
+>>>>>>> 76a4e227fdddf6087f61ef684b137fe143a47ee0
 		frame_id += 1;
 		double after = get_wall_time();
 		double frame_cost = after - before;
