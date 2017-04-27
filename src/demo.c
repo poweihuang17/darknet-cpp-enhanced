@@ -12,7 +12,7 @@
 #include <sys/time.h>
 #endif
 
-#define FREQ 3
+#define FREQ 30
 
 #ifdef OPENCV
 #include "opencv2/highgui/highgui_c.h"
@@ -257,8 +257,8 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
-		imshow("demo", cur_frame);
-		waitKey(1);
+		/* imshow("demo", cur_frame); */
+		/* waitKey(1); */
 		frame_id += 1;
 		double after = get_wall_time();
 		double frame_cost = after - before;
