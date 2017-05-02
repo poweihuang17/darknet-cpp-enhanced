@@ -106,8 +106,8 @@ void *fetch_in_thread(void *ptr){
 	after = get_wall_time();
 	cout << "crop opencv frame cost " << 1000 * (after - before) << " ms" << endl;
 	before = after;
-	cur_frame_img = mat_to_image(cur_frame);
-	cur_frame_img_s = resize_image(cur_frame_img, 416, 416);
+	/* cur_frame_img = mat_to_image(cur_frame); */
+	/* cur_frame_img_s = resize_image(cur_frame_img, 416, 416); */
 	//  keyframe
 	if((frame_id) % FREQ == 0){
 		if (!cur_frame.data){
@@ -148,7 +148,7 @@ vector<Rect2d> detect_roi(image roi){
 		error("Last layer must produce detections\n");
 	}
 	if (nms > 0) do_nms(boxes, probs, l.w*l.h*l.n, l.classes, nms);
-	vector<Rect2d> bboxes = process_detections(cur_frame_img, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
+	vector<Rect2d> bboxes = process_detections(roi, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
 	return bboxes;
 }
 
@@ -214,8 +214,8 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
     probs = (float **)calloc(l.w*l.h*l.n, sizeof(float *));
     for(int j = 0; j < l.w*l.h*l.n; ++j) probs[j] = (float *)calloc(l.classes, sizeof(float));
 	pthread_t detect_mid_thread, detect_right_thread, detect_left_thread;
-	namedWindow("demo", WINDOW_NORMAL);
-	resizeWindow("demo", 1280, 720);
+	/* namedWindow("demo", WINDOW_NORMAL); */
+	/* resizeWindow("demo", 1280, 720); */
     double before = get_wall_time();
     while(1){
 		printf("\033[2J");
@@ -233,28 +233,28 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 			mid_arg.y_offset = 500;
 			mid_arg.frame_offset = 0;
 			pthread_create(&detect_mid_thread, 0, detect_roi_in_thread, (void *)&mid_arg);
-			//  create right roi thread
-			det_thread_arg right_arg;
-			right_arg.roi_img = roi_right_img;
-			right_arg.roi_mat = roi_right_mat;
-			right_arg.tracker = &right_tracker;
-			right_arg.x_offset = 1216;
-			right_arg.y_offset = 500;
-			right_arg.frame_offset = 1;
-			pthread_create(&detect_right_thread, 0, detect_roi_in_thread, (void *)&right_arg);
-			//  create left roi thread
-			det_thread_arg left_arg;
-			left_arg.roi_img = roi_left_img;
-			left_arg.roi_mat = roi_left_mat;
-			left_arg.tracker = &left_tracker;
-			left_arg.x_offset = 1632;
-			left_arg.y_offset = 500;
-			left_arg.frame_offset = 2;
-			pthread_create(&detect_left_thread, 0, detect_roi_in_thread, (void *)&left_arg);
-			//  waiting for thread completion
+			/* //  create right roi thread */
+			/* det_thread_arg right_arg; */
+			/* right_arg.roi_img = roi_right_img; */
+			/* right_arg.roi_mat = roi_right_mat; */
+			/* right_arg.tracker = &right_tracker; */
+			/* right_arg.x_offset = 1216; */
+			/* right_arg.y_offset = 500; */
+			/* right_arg.frame_offset = 1; */
+			/* pthread_create(&detect_right_thread, 0, detect_roi_in_thread, (void *)&right_arg); */
+			/* //  create left roi thread */
+			/* det_thread_arg left_arg; */
+			/* left_arg.roi_img = roi_left_img; */
+			/* left_arg.roi_mat = roi_left_mat; */
+			/* left_arg.tracker = &left_tracker; */
+			/* left_arg.x_offset = 1632; */
+			/* left_arg.y_offset = 500; */
+			/* left_arg.frame_offset = 2; */
+			/* pthread_create(&detect_left_thread, 0, detect_roi_in_thread, (void *)&left_arg); */
+			/* //  waiting for thread completion */
 			pthread_join(detect_mid_thread, 0);
-			pthread_join(detect_right_thread, 0);
-			pthread_join(detect_left_thread, 0);
+			/* pthread_join(detect_right_thread, 0); */
+			/* pthread_join(detect_left_thread, 0); */
 		}else{
 			det_thread_arg mid_arg;
 			mid_arg.roi_img = cur_frame_img_s;
@@ -268,7 +268,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 			free_image(cur_frame_img);
 		}
 		/* rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1); */
-		/* rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1); */
+		rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
 		/* rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1); */
 		imshow("demo", cur_frame);
 		waitKey(1);
