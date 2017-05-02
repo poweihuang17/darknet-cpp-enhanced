@@ -10,9 +10,13 @@
 #include "track.h"
 #ifdef __linux__
 #include <sys/time.h>
+#include <fstream>
+#include <libgen.h>
+#include <sys/stat.h>
+#include <errno.h>
 #endif
 
-#define FREQ 3
+#define FREQ 1
 
 #ifdef OPENCV
 #include "opencv2/highgui/highgui_c.h"
@@ -42,6 +46,8 @@ static int frame_id;
 BBOX_tracker mid_tracker;
 BBOX_tracker right_tracker;
 BBOX_tracker left_tracker;
+char *video_file;
+char *weight_file;
 typedef struct detect_thread_data{
 	image roi_img;
 	Mat roi_mat;
@@ -51,9 +57,6 @@ typedef struct detect_thread_data{
 	int frame_offset;
 }det_thread_arg;
 
-image ipl_to_image(IplImage* src);
-vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes);
-
 double get_wall_time(){
     struct timeval time;
     if (gettimeofday(&time,NULL)){
@@ -61,6 +64,25 @@ double get_wall_time(){
     }
     return (double)time.tv_sec + (double)time.tv_usec * .000001;
 }
+
+int mkpath(char* file_path, mode_t mode) {
+	assert(file_path && *file_path);
+	char* p;
+	for(p = strchr(file_path + 1, '/'); p; p = strchr(p + 1, '/')) {
+		*p = '\0';
+		if (mkdir(file_path, mode) == -1) {
+			if (errno != EEXIST){ 
+				*p = '/'; 
+				return -1; 
+			}
+		}
+		*p = '/';
+	}
+return 0;
+}
+
+image ipl_to_image(IplImage* src);
+vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes);
 
 image mat_to_image(Mat src){
 
@@ -115,18 +137,18 @@ void *fetch_in_thread(void *ptr){
 		}
 		roi_mid_img = mat_to_image(roi_mid_mat);
 	}
-	if((frame_id + 1) % FREQ == 0){
-		if (!cur_frame.data){
-			roi_right_img = make_empty_image(0, 0, 0);
-		}
-		roi_right_img = mat_to_image(roi_right_mat);
-	}
-	if((frame_id + 2) % FREQ == 0){
-		if (!cur_frame.data){
-			roi_left_img = make_empty_image(0, 0, 0);
-		}
-		roi_left_img = mat_to_image(roi_left_mat);
-	}
+	/* if((frame_id + 1) % FREQ == 0){ */
+		/* if (!cur_frame.data){ */
+			/* roi_right_img = make_empty_image(0, 0, 0); */
+		/* } */
+		/* roi_right_img = mat_to_image(roi_right_mat); */
+	/* } */
+	/* if((frame_id + 2) % FREQ == 0){ */
+		/* if (!cur_frame.data){ */
+			/* roi_left_img = make_empty_image(0, 0, 0); */
+		/* } */
+		/* roi_left_img = mat_to_image(roi_left_mat); */
+	/* } */
 	after = get_wall_time();
 	cout << "change opencv mat to image cost " << 1000 * (after - before) << " ms" << endl;
     return 0;
@@ -154,35 +176,46 @@ vector<Rect2d> detect_roi(image roi){
 
 void *detect_roi_in_thread(void *ptr){
 	det_thread_arg arg = *(det_thread_arg *)ptr;
+	vector<Rect2d> bbox_draw;
+	Scalar color;
+
 	if((frame_id + arg.frame_offset) % FREQ == 0){
 		//----- keyframe-----//
 		//  detect roi
-		vector<Rect2d> bbox_draw = detect_roi(arg.roi_img);
+		bbox_draw = detect_roi(arg.roi_img);
 		free_image(arg.roi_img);
 		//  initial tracker
 		*arg.tracker = BBOX_tracker();
 		arg.tracker->SetObjects(bbox_draw);
 		arg.tracker->SetROI(arg.roi_mat);
 		arg.tracker->InitTracker();
-		//  draw boxes
-		for(unsigned int i = 0; i < bbox_draw.size(); i++){
-			bbox_draw.at(i).x += arg.x_offset;
-			bbox_draw.at(i).y += arg.y_offset;
-			rectangle(cur_frame, bbox_draw[i], Scalar(0, 255, 0), 2, 1);
-		}
+		color = Scalar(0, 255, 0);
 	}
 	else{
 		//-----non-keyframe-----//
 		//  track roi
 		arg.tracker->SetROI(arg.roi_mat);
 		arg.tracker->update();
-		vector<Rect2d> bbox_draw = arg.tracker->GetObjects();
-		//  draw boxes
+		bbox_draw = arg.tracker->GetObjects();
+		color = Scalar(0, 0, 255);
+	}
+	//  draw boxes and write prediction
+	int writepred = 1;
+	if(writepred){
+		FILE *online_label_file;
+		char online_label_name[100] = {0};
+		char online_label_data[100] = {0};
+		sprintf(online_label_name, "./online_data/%s/predictions/%s/%d.txt", video_file, weight_file, frame_id);	
+		online_label_file = fopen(online_label_name, "w");
 		for(unsigned int i = 0; i < bbox_draw.size(); i++){
 			bbox_draw.at(i).x += arg.x_offset;
 			bbox_draw.at(i).y += arg.y_offset;
-			rectangle(cur_frame, bbox_draw[i], Scalar(0, 0, 255), 2, 1);
+			rectangle(cur_frame, bbox_draw[i], color, 2, 1);
+			sprintf(online_label_data, "%d %f %f %f %f\n", 0, bbox_draw.at(i).x, bbox_draw.at(i).y, bbox_draw.at(i).width, bbox_draw.at(i).height);
+			fwrite(online_label_data, 1, strlen(online_label_data), online_label_file);	
+			memset(online_label_data, 0, sizeof(online_label_data));
 		}
+		fclose(online_label_file);
 	}
     return 0;
 }
@@ -209,6 +242,12 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
     }else{
         cap = VideoCapture(cam_index);
     }
+	video_file = strdup(filename);
+	video_file = strtok(basename(video_file), ".");
+	weight_file = strtok(basename(weightfile), ".");
+	char dir_name[100];
+	sprintf(dir_name, "./online_data/%s/predictions/%s/", video_file, weight_file);
+	mkpath(dir_name, S_IRWXU);
     layer l = net.layers[net.n - 1];
     boxes = (box *)calloc(l.w*l.h*l.n, sizeof(box));
     probs = (float **)calloc(l.w*l.h*l.n, sizeof(float *));
@@ -247,14 +286,14 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 			/* left_arg.roi_img = roi_left_img; */
 			/* left_arg.roi_mat = roi_left_mat; */
 			/* left_arg.tracker = &left_tracker; */
-			/* left_arg.x_offset = 1632; */
+			/* left_arg.x_offset = 384; */
 			/* left_arg.y_offset = 500; */
 			/* left_arg.frame_offset = 2; */
 			/* pthread_create(&detect_left_thread, 0, detect_roi_in_thread, (void *)&left_arg); */
-			/* //  waiting for thread completion */
+			//  waiting for thread completion
 			pthread_join(detect_mid_thread, 0);
-			/* pthread_join(detect_right_thread, 0); */
-			/* pthread_join(detect_left_thread, 0); */
+			pthread_join(detect_right_thread, 0);
+			pthread_join(detect_left_thread, 0);
 		}else{
 			det_thread_arg mid_arg;
 			mid_arg.roi_img = cur_frame_img_s;
@@ -267,9 +306,9 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 			pthread_join(detect_mid_thread, 0);
 			free_image(cur_frame_img);
 		}
-		/* rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1); */
+		rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1);
 		rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
-		/* rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1); */
+		rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
 		imshow("demo", cur_frame);
 		waitKey(1);
 		frame_id += 1;
