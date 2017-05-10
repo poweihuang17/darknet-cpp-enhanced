@@ -14,6 +14,7 @@
 #include <libgen.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <mutex>
 #endif
 
 #define FREQ 1
@@ -43,6 +44,9 @@ static float fps = 0;
 static float demo_thresh = 0;
 static float demo_hier_thresh = .5;
 static int frame_id;
+mutex mtx;
+int online_training = 0;
+int writepred = 0;
 BBOX_tracker mid_tracker;
 BBOX_tracker right_tracker;
 BBOX_tracker left_tracker;
@@ -56,6 +60,16 @@ typedef struct detect_thread_data{
 	int y_offset;
 	int frame_offset;
 }det_thread_arg;
+
+typedef struct yolo_box{
+	float x;
+	float y;
+	float width;
+	float height;
+	float prob;
+}yolo_rect;
+vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes);
+vector<yolo_rect> process_detections_ot(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes);
 
 double get_wall_time(){
     struct timeval time;
@@ -81,9 +95,6 @@ int mkpath(char* file_path, mode_t mode) {
 return 0;
 }
 
-image ipl_to_image(IplImage* src);
-vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes);
-
 image mat_to_image(Mat src){
 
     int h = src.rows;
@@ -107,50 +118,27 @@ image mat_to_image(Mat src){
     return out;
 }
 
-IplImage *crop_IplImage(IplImage *src, CvRect roi){
-	cvSetImageROI(src, roi);
-	IplImage *src_crop = cvCreateImage(cvGetSize(src), src->depth, src->nChannels);
-	cvCopy(src, src_crop, NULL);
-	cvResetImageROI(src);
-	return src_crop;
-}
-
 void *fetch_in_thread(void *ptr){
-
-	double before = get_wall_time();
 	cap >> cur_frame;
-	double after = get_wall_time();
-	cout << "cv query frame cost " << 1000 * (after - before) << " ms" << endl;
-	before = after;
-	roi_mid_mat = cur_frame(Rect(800, 500, 416, 416));
-	roi_right_mat = cur_frame(Rect(1216, 500, 416, 416));
-	roi_left_mat = cur_frame(Rect(384, 500, 416, 416));
-	after = get_wall_time();
-	cout << "crop opencv frame cost " << 1000 * (after - before) << " ms" << endl;
-	before = after;
-	/* cur_frame_img = mat_to_image(cur_frame); */
-	/* cur_frame_img_s = resize_image(cur_frame_img, 416, 416); */
-	//  keyframe
-	if((frame_id) % FREQ == 0){
-		if (!cur_frame.data){
-			roi_mid_img = make_empty_image(0, 0, 0);
-		}
-		roi_mid_img = mat_to_image(roi_mid_mat);
+	if(online_training){
+		cur_frame_img = mat_to_image(cur_frame);
+		cur_frame_img_s = resize_image(cur_frame_img, 608, 608);
 	}
-	/* if((frame_id + 1) % FREQ == 0){ */
-		/* if (!cur_frame.data){ */
-			/* roi_right_img = make_empty_image(0, 0, 0); */
-		/* } */
-		/* roi_right_img = mat_to_image(roi_right_mat); */
-	/* } */
-	/* if((frame_id + 2) % FREQ == 0){ */
-		/* if (!cur_frame.data){ */
-			/* roi_left_img = make_empty_image(0, 0, 0); */
-		/* } */
-		/* roi_left_img = mat_to_image(roi_left_mat); */
-	/* } */
-	after = get_wall_time();
-	cout << "change opencv mat to image cost " << 1000 * (after - before) << " ms" << endl;
+	else{
+		roi_mid_mat = cur_frame(Rect(800, 500, 416, 416));
+		roi_right_mat = cur_frame(Rect(1216, 500, 416, 416));
+		roi_left_mat = cur_frame(Rect(384, 500, 416, 416));
+		//  keyframe
+		if((frame_id) % FREQ == 0){
+			roi_mid_img = mat_to_image(roi_mid_mat);
+		}
+		if((frame_id + 1) % FREQ == 0){
+			roi_right_img = mat_to_image(roi_right_mat);
+		}
+		if((frame_id + 2) % FREQ == 0){
+			roi_left_img = mat_to_image(roi_left_mat);
+		}
+	}
     return 0;
 }
 
@@ -170,19 +158,43 @@ vector<Rect2d> detect_roi(image roi){
 		error("Last layer must produce detections\n");
 	}
 	if (nms > 0) do_nms(boxes, probs, l.w*l.h*l.n, l.classes, nms);
-	vector<Rect2d> bboxes = process_detections(roi, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
+	vector<Rect2d> bboxes = process_detections(cur_frame_img, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
+	return bboxes;
+}
+vector<yolo_rect> detect_roi_ot(image roi){
+	float nms = .4;
+	layer l = net.layers[net.n-1];
+	float *X = roi.data;
+	double before = get_wall_time();
+	network_predict(net, X);
+	double after = get_wall_time();
+	cout << "prediction cost " << 1000 * (after - before) << " ms" << endl;
+	if(l.type == DETECTION){
+		get_detection_boxes(l, 1, 1, demo_thresh, probs, boxes, 0);
+	} else if (l.type == REGION){
+		get_region_boxes(l, 1, 1, demo_thresh, probs, boxes, 0, 0, demo_hier_thresh);
+	} else {
+		error("Last layer must produce detections\n");
+	}
+	if (nms > 0) do_nms(boxes, probs, l.w*l.h*l.n, l.classes, nms);
+	vector<yolo_rect> bboxes = process_detections_ot(cur_frame_img, l.w*l.h*l.n, demo_thresh, boxes, probs, demo_names, demo_alphabet, demo_classes);
 	return bboxes;
 }
 
 void *detect_roi_in_thread(void *ptr){
 	det_thread_arg arg = *(det_thread_arg *)ptr;
 	vector<Rect2d> bbox_draw;
+	vector<yolo_rect> bbox_ot;
 	Scalar color;
 
 	if((frame_id + arg.frame_offset) % FREQ == 0){
 		//----- keyframe-----//
 		//  detect roi
-		bbox_draw = detect_roi(arg.roi_img);
+		if(online_training)
+			bbox_ot = detect_roi_ot(arg.roi_img);
+		else
+			bbox_draw = detect_roi(arg.roi_img);
+
 		free_image(arg.roi_img);
 		//  initial tracker
 		*arg.tracker = BBOX_tracker();
@@ -199,8 +211,8 @@ void *detect_roi_in_thread(void *ptr){
 		bbox_draw = arg.tracker->GetObjects();
 		color = Scalar(0, 0, 255);
 	}
-	//  draw boxes and write prediction
-	int writepred = 1;
+	mtx.lock();
+	//  write prediction
 	if(writepred){
 		FILE *online_label_file;
 		char online_label_name[100] = {0};
@@ -208,15 +220,53 @@ void *detect_roi_in_thread(void *ptr){
 		sprintf(online_label_name, "./online_data/%s/predictions/%s/%d.txt", video_file, weight_file, frame_id);	
 		online_label_file = fopen(online_label_name, "w");
 		for(unsigned int i = 0; i < bbox_draw.size(); i++){
-			bbox_draw.at(i).x += arg.x_offset;
-			bbox_draw.at(i).y += arg.y_offset;
-			rectangle(cur_frame, bbox_draw[i], color, 2, 1);
 			sprintf(online_label_data, "%d %f %f %f %f\n", 0, bbox_draw.at(i).x, bbox_draw.at(i).y, bbox_draw.at(i).width, bbox_draw.at(i).height);
 			fwrite(online_label_data, 1, strlen(online_label_data), online_label_file);	
 			memset(online_label_data, 0, sizeof(online_label_data));
 		}
 		fclose(online_label_file);
 	}
+	//  write image and label for online training
+	if(online_training){
+		FILE *online_label_file;
+		char online_label_name[100] = {0};
+		char online_image_name[100] = {0};
+		char online_label_data[100] = {0};
+		sprintf(online_label_name, "./online_data/%s/labels/%d.txt", video_file, frame_id);	
+		sprintf(online_image_name, "./online_data/%s/images/%d.jpg", video_file, frame_id);	
+		online_label_file = fopen(online_label_name, "w");
+		for(unsigned int i = 0; i < bbox_ot.size(); i++){
+			float x = bbox_ot.at(i).x;
+			float y = bbox_ot.at(i).y;
+			float w = bbox_ot.at(i).width;
+			float h = bbox_ot.at(i).height;
+			int left  = (x - w / 2.) * 1920;
+			int right = (x + w / 2.) * 1920;
+			int top   = (y - h / 2.) * 1080;
+			int bot   = (y + h / 2.) * 1080;
+			Rect b(left, top, right - left, bot - top);
+			if(bbox_ot.at(i).prob < 0.2){
+				rectangle(cur_frame, b, Scalar(0, 0, 0), CV_FILLED, 1);
+			}
+			else{
+				rectangle(cur_frame, b, Scalar(0, 0, 255), 4, 1);
+				sprintf(online_label_data, "%d %f %f %f %f\n", 0, x, y, w, h);
+				fwrite(online_label_data, 1, strlen(online_label_data), online_label_file);	
+				memset(online_label_data, 0, sizeof(online_label_data));
+			}
+		}
+		imwrite(online_image_name, cur_frame);
+		fclose(online_label_file);
+	}
+	//  if not online training then draw boxes for show
+	else{
+		for(unsigned int i = 0; i < bbox_draw.size(); i++){
+			bbox_draw.at(i).x += arg.x_offset;
+			bbox_draw.at(i).y += arg.y_offset;
+			rectangle(cur_frame, bbox_draw[i], color, 2, 1);
+		}
+	}
+	mtx.unlock();
     return 0;
 }
 
@@ -235,6 +285,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
         load_weights(&net, weightfile);
     }
     set_batch_network(&net, 1);
+	/* resize_network(&net, 608, 608); */
     srand(2222222);
     if(filename){
         printf("video file: %s\n", filename);
@@ -248,13 +299,17 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 	char dir_name[100];
 	sprintf(dir_name, "./online_data/%s/predictions/%s/", video_file, weight_file);
 	mkpath(dir_name, S_IRWXU);
+	sprintf(dir_name, "./online_data/%s/labels/", video_file, weight_file);
+	mkpath(dir_name, S_IRWXU);
+	sprintf(dir_name, "./online_data/%s/images/", video_file, weight_file);
+	mkpath(dir_name, S_IRWXU);
     layer l = net.layers[net.n - 1];
     boxes = (box *)calloc(l.w*l.h*l.n, sizeof(box));
     probs = (float **)calloc(l.w*l.h*l.n, sizeof(float *));
     for(int j = 0; j < l.w*l.h*l.n; ++j) probs[j] = (float *)calloc(l.classes, sizeof(float));
 	pthread_t detect_mid_thread, detect_right_thread, detect_left_thread;
-	/* namedWindow("demo", WINDOW_NORMAL); */
-	/* resizeWindow("demo", 1280, 720); */
+	namedWindow("demo", WINDOW_NORMAL);
+	resizeWindow("demo", 1352, 1013);
     double before = get_wall_time();
     while(1){
 		printf("\033[2J");
@@ -262,7 +317,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		printf("[frame id:%d]\n", frame_id);
 		printf("FPS:%.1f\n", fps);
 		fetch_in_thread(0);
-		if(1){
+		if(0){
 			//  create mid roi thread
 			det_thread_arg mid_arg;
 			mid_arg.roi_img = roi_mid_img;
@@ -272,24 +327,24 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 			mid_arg.y_offset = 500;
 			mid_arg.frame_offset = 0;
 			pthread_create(&detect_mid_thread, 0, detect_roi_in_thread, (void *)&mid_arg);
-			/* //  create right roi thread */
-			/* det_thread_arg right_arg; */
-			/* right_arg.roi_img = roi_right_img; */
-			/* right_arg.roi_mat = roi_right_mat; */
-			/* right_arg.tracker = &right_tracker; */
-			/* right_arg.x_offset = 1216; */
-			/* right_arg.y_offset = 500; */
-			/* right_arg.frame_offset = 1; */
-			/* pthread_create(&detect_right_thread, 0, detect_roi_in_thread, (void *)&right_arg); */
-			/* //  create left roi thread */
-			/* det_thread_arg left_arg; */
-			/* left_arg.roi_img = roi_left_img; */
-			/* left_arg.roi_mat = roi_left_mat; */
-			/* left_arg.tracker = &left_tracker; */
-			/* left_arg.x_offset = 384; */
-			/* left_arg.y_offset = 500; */
-			/* left_arg.frame_offset = 2; */
-			/* pthread_create(&detect_left_thread, 0, detect_roi_in_thread, (void *)&left_arg); */
+			//  create right roi thread
+			det_thread_arg right_arg;
+			right_arg.roi_img = roi_right_img;
+			right_arg.roi_mat = roi_right_mat;
+			right_arg.tracker = &right_tracker;
+			right_arg.x_offset = 1216;
+			right_arg.y_offset = 500;
+			right_arg.frame_offset = 1;
+			pthread_create(&detect_right_thread, 0, detect_roi_in_thread, (void *)&right_arg);
+			//  create left roi thread
+			det_thread_arg left_arg;
+			left_arg.roi_img = roi_left_img;
+			left_arg.roi_mat = roi_left_mat;
+			left_arg.tracker = &left_tracker;
+			left_arg.x_offset = 384;
+			left_arg.y_offset = 500;
+			left_arg.frame_offset = 2;
+			pthread_create(&detect_left_thread, 0, detect_roi_in_thread, (void *)&left_arg);
 			//  waiting for thread completion
 			pthread_join(detect_mid_thread, 0);
 			pthread_join(detect_right_thread, 0);
@@ -297,7 +352,6 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 		}else{
 			det_thread_arg mid_arg;
 			mid_arg.roi_img = cur_frame_img_s;
-			/* mid_arg.roi_mat = roi_mid_mat; */
 			mid_arg.tracker = &mid_tracker;
 			mid_arg.x_offset = 0;
 			mid_arg.y_offset = 0;
@@ -306,11 +360,11 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 			pthread_join(detect_mid_thread, 0);
 			free_image(cur_frame_img);
 		}
-		rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1);
-		rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1);
-		rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1);
-		imshow("demo", cur_frame);
-		waitKey(1);
+		/* rectangle(cur_frame, Point(384, 500), Point(800, 916), Scalar(255, 255, 0), 2, 1); */
+		/* rectangle(cur_frame, Point(800, 500), Point(1216, 916), Scalar(255, 255, 0), 2, 1); */
+		/* rectangle(cur_frame, Point(1216, 500), Point(1632, 916), Scalar(255, 255, 0), 2, 1); */
+		/* imshow("demo", cur_frame); */
+		/* waitKey(1); */
 		frame_id += 1;
 		double after = get_wall_time();
 		double frame_cost = after - before;
@@ -326,8 +380,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 }
 #endif
 
-vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes)
-{
+vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes){
     int i;
 	vector<Rect2d> tmp_bbox_list;
     for(i = 0; i < num; ++i){
@@ -339,15 +392,30 @@ vector<Rect2d> process_detections(image im, int num, float thresh, box *boxes, f
             int right = (b.x + b.w / 2.) * im.w;
             int top   = (b.y - b.h / 2.) * im.h;
             int bot   = (b.y + b.h / 2.) * im.h;
-			/* left += 800; */
-			/* right += 800; */
-			/* top += 500; */
-			/* bot += 500; */
 			Rect bbox;
 			bbox.x = left;
 			bbox.y = top;
 			bbox.width = right - left;
 			bbox.height = bot - top;
+			tmp_bbox_list.push_back(bbox);
+        }
+    }
+	return tmp_bbox_list;
+}
+vector<yolo_rect> process_detections_ot(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes){
+    int i;
+	vector<yolo_rect> tmp_bbox_list;
+    for(i = 0; i < num; ++i){
+        float prob = probs[i][0];
+        if(prob > thresh){
+            printf("%s: %.0f%%\n", names[0], prob*100);
+            box b = boxes[i];
+			yolo_rect bbox;
+			bbox.x = b.x;
+			bbox.y = b.y;
+			bbox.width = b.w;
+			bbox.height = b.h;
+			bbox.prob = prob;
 			tmp_bbox_list.push_back(bbox);
         }
     }
