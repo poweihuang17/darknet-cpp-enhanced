@@ -1,5 +1,5 @@
 classes= 9
-train  = /home/newslab/darknet-cpp/online_data/online_lst.txt
+train  = /home/newslab/darknet-cpp/online_data/night_train/night_train_lst.txt
 valid  = test.txt
 names = data/voc-kitti.names
 backup = /home/newslab/yolo_weights/
