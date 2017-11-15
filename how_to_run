@@ -1,0 +1,32 @@
+How to run darknet demo
+=======================
+
+## About the video
+In directory `~/darknet-cpp2/Y3demovideo`, video for demo:
+demo_merge.mp4
+demo_origin_y3.mp4
+
+
+## About compile:
+use `make -k` to skip compile error and generate executable
+
+## darknet-cpp2
+
+command example:
+```
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_merge.mp4
+```
+
+### Baseline:
+
+* mode change:
+Comment out source code: file `src/demo.c` line 365-378.
+
+* fusion:
+Comment out source code: file `src/demo.c` line 403-438, line 441-444, anything related to `up` and `right`.
+The result video can see that, long range results decrease drastically.
+
+### Enhance:
+
+Don't comment out above code, run on video.

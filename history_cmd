@@ -1,0 +1,2000 @@
+pip3
+sudo apt-get purge python3-pip
+sudo apt-get install python3-pip
+pip3
+sudo apt-get install python3-pip
+sudo apt-get autoremove python3.5
+sudo apt-get autoremove python3-pip
+sudo apt-get autoremove python3.5
+sudo apt-get autoremove python3
+python3
+sudo apt-get autoremove python 3.5.0
+cd~
+cd ~
+ls
+sudo apt-get install python3-pip
+pip3
+sudo apt-get autoremove python3-pip
+ls
+sudo ln -s /usr/bin/python3.4 /usr/bin/python3
+python3
+ls
+sudo apt-get install python3-pip
+pip3
+sudo pip3 install websocket-client
+ls
+scp -r newslab@140.112.28.114:~/kucw/yolo_v2 kucw
+ls
+cd kucw/
+ls
+make clean
+make
+make darknet-cpp
+scp -r newslab@140.112.28.114:~/ThesisVideo .
+vim run.sh 
+make
+chmod 777 run.sh 
+./run.sh 
+cd ~
+cd Python-3.5.1/
+ls
+sudo make uninstall
+which python3.5
+python3
+which python3
+sudo rm /usr/bin/python3
+ls
+python3
+pip3
+cd ~
+ls
+nvidia-smi -lms
+ls
+vim src/demo.c 
+make darknet-cpp
+./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train_lst.weights online_data/night_valid_all/video/night_valid_all.mp4 
+ls
+vim src/demo.c 
+make darknet-cpp
+./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train_lst.weights online_data/night_valid_all/video/night_valid_all.mp4 
+cd online_data
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.2
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.1
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.2
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.1
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.3
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.1
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.2
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.3
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.1
+cd on
+cd night_valid_all/
+cd predictions/
+cd night_train_lst_416/
+ll
+cd ..
+ls
+cd ..
+ls
+cd ..
+ls
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.1
+vim comparev4.py 
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.1
+vim comparev4.py 
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.1
+vim comparev4.py 
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.1
+vim comparev4.py 
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.1
+vim comparev4.py 
+python comparev4.py night_valid_all/truelabels/ night_valid_all/predictions/night_train_lst_416/ 0.1
+cd bitfinex
+cd bitfinex-w
+cd bitfinex_w
+cd bitfinex_wss/
+python3 sample.py 
+python
+python3
+cd /usr/
+cd bin/
+ls python*
+rm python3
+sudo rm python3
+ls
+sudo ln -s /usr/local/bin/python3.4 /usr/bin/python3
+ls
+ls pyhotn
+ls python*
+rm python3
+sudo ln -s /usr/local/python3 /usr/bin/python3
+sudo rm python3
+sudo ln -s /usr/local/python3 /usr/bin/python3
+ls
+ls python*
+rm python3
+sudo rm python3
+cd ~
+sudo apt-get install python3
+python 3
+python3
+python3.5
+python3.4
+type python3.5
+sudo ln -s /usr/local/python3.5 /usr/bin/python3
+python3
+sudo ln -s /usr/local/bin/python3.5 /usr/bin/python3
+sudo rm /usr/bin/python3
+sudo ln -s /usr/local/bin/python3.5 /usr/bin/python3
+python3
+cd bitfinex/
+cd bitfinex_W
+cd bitfinex_wss/
+python3 sample.py 
+pip3
+sudo apt-get remove pip3
+sudo apt-get purge pip
+sudo apt-get remove python3-setuptools
+pip3
+sudo apt-get --purge autoremove python3-pip
+pip3
+sudo rm /usr/local/bin/pip3
+pip3
+s
+ad
+1
+jp
+p
+sudo vim /etc/sudoers
+cd /usr/bin/
+ls pytho*
+kla
+sudo apt-get install python-setuptools
+curl -O https://bootstrap.pypa.io/get-pip3.py
+ls
+cd ~
+curl -O https://bootstrap.pypa.io/get-pip.py
+ls
+python get-pip.py 
+lsb_release -a
+make
+gnome-open thesis.pdf 
+make
+gnome-open thesis.pdf 
+cd ~
+cd Data_Analyzer/
+vim analyzer.py 
+cd data/
+cd yolov2/
+cd voc_kitti/
+ll
+vim kitti.txt 
+make
+cd ~
+cd M17_Lin/
+cd trunk/
+cd thesis/
+make
+cd thesis/
+make
+vim ntuvars.tex 
+make
+vim thesis.bib 
+make
+ls
+nvidia-smi
+top
+type python3
+ls
+ll
+l
+1
+python
+ls
+sudo apt-get purge --auto-remove python3.4
+sudo apt-get remove --auto-remove python3.4
+python3
+ls
+f
+1
+cd bitfinex/
+pip3
+cd bitfinex_wss/
+python3.4
+python3.5 sample.py 
+sq
+python3.5 sample.py 
+python3.4 sample.py 
+python3.5 sample.py 
+ls
+vim ../k_8810x 8
+vim ../k_8810x 
+ls
+vim ../k_8810x 
+cd ~
+cd bitfinex/
+cd websocket_api2/
+vim t.py 
+nvidia-smi -lms
+cd ~
+cd online_data/
+cd tm
+cd tmp
+cd daylight_valid/
+ls
+cd labels/
+ls
+cd ..
+ls
+cd images/
+cd ..
+ls
+cd video/
+ls
+cd ..
+ls
+cd label_backup/
+cd ..
+ls
+cd ..
+cd tmp/
+cd ..
+mv tmp/ online_data/
+cd online_data/
+ls
+cd tmp/
+ls
+cd daylight_valid
+ls
+cd ..
+ls
+scp -r daylight_train jeff@140.112.28.112
+scp -r daylight_train jeff@140.112.28.112:~/online_data
+ls
+scp -r daylight_valid jeff@140.112.28.112:~/online_data
+cd ..
+cd yolo_weights/
+ll
+cd daylight/
+ll
+cd ..
+rm -r daylight/
+ll
+cd ~
+cd darknet-cpp/
+ls
+./darknet-cpp detector demo data/voc-kitti.data cfg/yolo-voc-kitti.cfg ../yolo_weights/yolov2_voc_kitti_rand.weights onl
+ls
+ln -s ../online_data/ online_data
+./darknet-cpp detector demo data/voc-kitti.data cfg/yolo-voc-kitti.cfg ../yolo_weights/yolov2_voc_kitti_rand.weights online_data/tmp/daylight_train/video/daylight_train.mp4 
+ls
+make clean-cpp
+make darknet-cpp -j20
+mv online_data/tmp/daylight_train online_data
+ls
+./darknet-cpp detector demo data/voc-kitti.data cfg/yolo-voc-kitti.cfg ../yolo_weights/yolov2_voc_kitti_rand.weights online_data/daylight_train/video/daylight_train.mp4 
+vim src/demo.c 
+make darknet-cpp -j20
+./darknet-cpp detector demo data/voc-kitti.data cfg/yolo-voc-kitti.cfg ../yolo_weights/yolov2_voc_kitti_rand.weights online_data/daylight_train/video/daylight_train.mp4 
+vim src/demo.c 
+make darknet-cpp -j20
+./darknet-cpp detector demo data/voc-kitti.data cfg/yolo-voc-kitti.cfg ../yolo_weights/yolov2_voc_kitti_rand.weights online_data/daylight_train/video/daylight_train.mp4 
+vim src/demo.c 
+make darknet-cpp -j20
+./darknet-cpp detector demo data/voc-kitti.data cfg/yolo-voc-kitti.cfg ../yolo_weights/yolov2_voc_kitti_rand.weights online_data/daylight_train/video/daylight_train.mp4 
+ls
+vim src/demo.c 
+ls
+vim src/demo.c 
+make darknet-cpp -j20
+./darknet-cpp detector demo data/voc-kitti.data cfg/yolo-voc-kitti.cfg ../yolo_weights/yolov2_voc_kitti_rand.weights online_data/daylight_train/video/daylight_train.mp4 
+./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train_lst.weights online_data/night_valid_all/video/night_valid_all.mp4 
+vim src/demo.c 
+make darknet-cpp -j20
+./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train_lst.weights online_data/night_valid_all/video/night_valid_all.mp4 
+vim src/demo.c 
+make darknet-cpp -j20
+./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train_lst.weights online_data/night_valid_all/video/night_valid_all.mp4 
+vim src/demo.c 
+make darknet-cpp -j20
+./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train_lst.weights online_data/night_valid_all/video/night_valid_all.mp4 
+vim src/demo.c 
+make darknet-cpp -j20
+./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train_lst.weights online_data/night_valid_all/video/night_valid_all.mp4 
+cd ~
+wget https://bootstrap.pypa.io/ez_setup.py
+python3.5 ez_setup.py
+easy_install-3.5 pip
+ls
+python3.5 ez_setup.py
+sudo python3.5 ez_setup.py
+easy_install-3.5 pip
+/opt/python3.5/bin/easy_install-3.5 pip
+sudo /opt/python3.5/bin/easy_install-3.5 pip
+sudo apt-get install --reinstall python-pkg-resources
+sudo apt-get install --reinstall python3-pkg-resources
+/opt/python3.5/bin/easy_install-3.5 pip
+pip3 install --upgrade setuptools
+pip install --upgrade setuptools
+pip 
+pip install
+pip uninstall python==3.5.0
+cd py3_venv/
+cd ..
+ls
+cd Python-3.5.1/
+make clean
+make uninstall
+make -n install
+make uninstall
+python3.5
+ls
+make clean && make distclean
+python3.5
+ls
+pip3
+pip 
+pip install
+sudo pip install
+lsb_release
+lsb_release -a
+python2.7 /usr/bin/lsb_release
+/usr/bin/lsb_release
+vim /usr/bin/lsb_release
+sudo vim /usr/bin/lsb_release
+pip
+pip install
+pip3.4 
+pip3
+python3.5
+ls
+cd ~
+ls
+python
+ls
+cd bitfinex/
+rm -rf bitfinex_wss/
+ls
+mkdir websocket_api2
+cd websocket_api2/
+ls
+vim t.py
+ls
+cd M17_Lin/
+cd trunk/
+cd thesis/
+make
+svn add *
+svn commit
+cd /usr/bin/
+cd /usr/local/bin
+pip3
+pip3 install websocket
+pip3 install websocket-client
+nvidia-smi -lms
+ls
+ll
+cd ~
+lsb_release
+lsb_release -a
+sudo apt-get install lsb_release
+ifconfig
+iwconfig
+ifconfig
+iwconfig
+ifconfig
+ifconfig =a
+ifconfig -a
+ping 8.8.8.8
+cat /etc/resolv.conf 
+sudo cat /etc/resolv.conf 
+sudo ifup enp0s31f6
+ifconfig -a
+sudo ifup eth0
+sudo cat /etc/resolv.conf 
+resolvconf 
+cat /etc/network/interfaces
+sudo vim /etc/network/interfaces
+/etc/init.d/networking restart
+sudo vim /etc/network/interfaces
+ifconfig
+sudo vim /etc/network/interfaces
+/etc/init.d/networking restart
+sudo /etc/init.d/networking restart
+ifconfig
+vim /etc/hosts
+man resolvconf
+vim /etc/hosts
+ifconfig
+sudo /etc/init.d/networking restart
+sudo /etc/init.d/networking stop
+sudo /etc/init.d/networking restart
+sudo /etc/init.d/networking stop
+sudo resolvconf -u
+ifconfig 
+cd /etc/resolvconf/resolv.conf.d/
+ls
+sudo cp -p head head.orig
+ls
+vim head
+sudo vim head
+sudo resolvconf -u
+ifconfig
+vim base 
+sudo vim base 
+sudo resolvconf -u
+ifconfig
+sudo reboot -i
+ping 8.8.8.8
+ls
+ll
+ls
+ifconfig
+sudo apt-get install lsb_release
+lsb_release -a
+sudo apt-get install lsb_release
+sudo apt-get install update
+sudo apt-get  update
+lsb_release -a
+apt-cache policy lsb-release    
+sudo apt-get install lsb-release
+lsb_release -a
+ls
+nvidia-smi -lms
+nvidia-smi
+cd M17_Lin/
+cd trunk/
+cd thesis/
+svn add *
+svn commit
+LS
+svn commit
+svn cleanup 
+svn commit
+ls
+sudo apt-get install pip
+ifconfig
+ping 8.8.8.8
+ls
+lls
+ls
+cd ~
+ls
+sudo vim /etc/network/interfaces
+sudo service networking start
+sudo service networking restart
+ifconfig
+ping 8.8.8.8
+sudo ifdown
+sudo ifdown eth0
+sudo ifup eth0
+ping 8.8.8.8
+ls
+sudo apt-get install lsb_release
+lsb_release 
+lsb_release  -a
+ls
+cd M17_Lin/
+cd trunk/
+cd thesis/
+make
+sudo svn add *
+svn commit
+ls
+cd ..
+cd ~
+ls
+sudo service lightdm restart
+sudo lightdm restart
+sudo restart lightdm
+sudo restart gdm
+sudo restart kdm
+sudo restart mdm
+cat /etc/X11/default-display-manager 
+sudo restart lightdm
+sudo systemctl
+sudo systemctl restart lightdm.service
+killall Xorg lightdm
+ls
+lightdm
+sudo reboot -i
+sudo apt-get install lightdm
+ls
+sudo apt-get install lightdm
+sudo reboot -i
+sudo apt-get install ubuntu-desktop
+ls
+sudo reboot -i
+ls
+cd MLDS2017/
+cd hw4
+python at_seq2seq.py
+ls
+cd ~
+cd bitfinex/websocket_api2/
+python t.py 
+python3 t.py 
+vim t.py 
+ls
+cd ~
+ls
+cd bitfinex/
+python
+python3
+ls
+pip3
+cd websocket_api2/
+python t.py 
+ls
+python3 t.py 
+pip3 install websocket-client
+sudo pip3 install websocket-client
+ls
+python3 t.py 
+python3
+ls
+sudo pip3 install websocket-client --upgrade
+python3
+python3 tl.
+python3 tp
+python3 t.py 
+cd /usr/local/
+cd bin/
+ls
+cd ~
+cd bitfinex/
+cd websocket_api2/
+py3.5 t.py 
+ls
+python t.py 
+vim t.py 
+python3.5 t.py 
+vim t.py 
+python3.5 t.py 
+python t.py 
+python3.5 t.py 
+python t.py 
+python3 t.py 
+python t.py 
+pip remove websocket
+sudo pip remove websocket
+sudo pip uninstall websocket
+sudo pip install websocket-client --upgrade
+python t.py 
+python
+openssl version
+sudo pip install --upgrade pyOpenSSL
+python t.py 
+sudo pip install ssl --upgrade
+sudo pip install pyOpenSSL --upgrade
+dpkg -p openssl | grep Version
+sudo apt-get install --reinstall build-essential python-pip python-dev libssl-dev libffi-dev
+python t.py 
+sudo pip2.7 install -U setuptools pip pyasn1 ndg-httpsclient pyopenssl==0.13.1
+python t.py 
+type python
+python
+which python
+python
+sudo add-apt-repository ppa:fkrull/deadsnakes-python2.7
+sudo apt-get update
+sudo apt-get install python2.7
+ifconfig 
+ls
+cd 
+ls
+cd Templates/
+ls
+cd ..
+ls
+wget tronzo.asia
+ls
+vim index.html 
+rm index.html 
+ls
+cd paper/
+cd ..
+ls
+cd M17_Lin/
+ls
+cd trunk/
+cd thesis/
+ls
+lspci
+vim /usr/local/lib/python2.7/dist-packages/websocket/_http.py
+cd .ssh/
+vim config 
+ssh Ubuntu-Home 
+vim config 
+ls
+cd ..
+cd Desktop/
+scp -r chunyo@123.193.69.167:~/Desktop/xmr .
+ls
+cd xmr/
+ls
+cd cpuminer-multi/
+vim sta
+vim start.sh 
+sh start.sh 
+ls
+make
+ls
+sudo apt-get install git libcurl4-openssl-dev build-essential libjansson-dev autotools-dev automake
+./autogen.sh
+CFLAGS="-march=native" ./configure
+make
+sh start.sh 
+make
+gnome-open thesis.pdf 
+make
+svn add *
+svn commit
+vim ch6_conclusion.tex 
+vim ch5_experiment.tex 
+make
+ls
+top
+ifconfig
+make
+vim thesis.bib 
+make
+vim thesis.
+vim thesis.b
+vim thesis.bib 
+ls
+ssh jeff@140.112.28.112
+ls
+cd ..
+cd ~
+cd darknet-cpp/
+./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train3.weights online_data/night_valid3/video/night_valid3.mp4 
+ll
+cd ..
+ssh jeff@140.112.28.112
+cd ~
+ssh jeff@140.112.28.112
+ssh jeff@140.112.28.112
+ssh jeff@140.112.28.112
+cd Desktop/
+cd xmr/
+cd cpuminer-multi/
+sh start.sh 
+ls
+cd ..
+rm -rf xmr/
+scp -r chunyo@123.193.69.167:~/Desktop/xmr .
+cd xmr/
+cd xmrig/
+sudo apt-get install git build-essential cmake libcurl4-openssl-dev
+cd build/
+make
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make
+./xmrig 
+ls
+vim start.sh
+sh start.sh 
+ls
+top
+ls
+top
+ls
+ssh Ubuntu-Home 
+cd ~
+cd Desktop/
+cd zec/
+sh start.sh 
+ls
+ssh jeff@140.112.28.112
+cd ~
+cd online_data/
+vim comparev4.py 
+ssh jeff@140.112.28.112
+:q
+cd M17_Lin/
+cd trunk/
+cd thesis/
+vim ch6_conclusion.tex 
+vim ch4_design.tex 
+ls
+vim ch4_design.tex 
+vim ch3_architecture.tex 
+make
+vim ch3_architecture.tex 
+make
+ls
+vim ch3_architecture.tex 
+vim ch5_architecture.tex 
+vim ch5_experiment.tex 
+vim ch2_background.tex 
+vim ch6_conclusion.tex 
+vim ch2_background.tex 
+make
+svn add *
+svn commit
+ls
+cd figures/
+scp jeff@140.112.28.112:~/figure_1.png
+scp jeff@140.112.28.112:~/figure_1.png .
+ls
+cd ..
+make
+cd ..
+cd ~
+ls
+cp -r M17_Lin/trunk/thesis/ thesis_github
+ls
+cd thesis_github/
+git init
+git add .
+git commit -m 'first initial'
+git pgit remote add origin https://github.com/ChunYoLin/thesis_github.git
+git remote add origin https://github.com/ChunYoLin/thesis_github.git
+git push -u origin master
+cd ..
+ls
+cd thesis_github/
+ls
+make
+ls
+vim ch1_introduction.tex 
+ls
+ll
+ls
+git status
+ls
+vim ch1_introduction.tex 
+ls
+ll
+ls
+cd ..
+ls
+cd thesis_github/
+ls
+vim ch1_introduction.tex 
+cd ~
+rm -rf thesis_github/
+cd M17_Lin/
+cd trunk/
+cd thesis/
+vim ch1_introduction.tex 
+svn add 
+svn add *
+svn commit
+vim ch1_introduction.tex 
+vim ch2_background.tex 
+vim ch3_architecture.tex 
+git add .
+git commit -m 'revise ch1 ch2 ch3'
+git push
+vim ch2_background.tex 
+make
+svn add *
+svn commit 
+vim ch2_background.tex 
+vim ch3_architecture.tex 
+vim ch4
+vim ch4_design.tex 
+ssh jeff@140.112.28.112
+ls
+vim ch4_design.tex 
+make
+ls
+git add .
+git commit -m 'revise chap4'
+git push
+make
+vim thesis.bib 
+make
+vim ch6_conclusion.tex 
+make
+git add .
+git commit -m 'revise ch4 ch5 ch6'
+git push
+svn add *
+svn commit
+cd ~
+cd Desktop/
+cd zec/
+cd 0.3.4b/
+sh start.sh 
+make
+vim ch4_design.tex 
+vim ch3_design.tex 
+vim ch3_architecture.tex 
+svn add *
+svn commit
+svn commit 
+svn add *
+svn commit
+ls
+vim ch4_design.tex 
+ls
+svn add *
+svn commit 
+ls
+make
+svn add *
+svn commit 
+vim ch1_introduction.tex 
+make
+vim ch1_introduction.tex 
+ls
+l
+git init
+ls
+cd ..
+cd thesis/
+ls
+git add .
+git commit -m 'init'
+git remote add origin https://github.com/ChunYoLin/thesis.git
+git push -u origin master
+ls
+make
+git add .
+git commit -m '.'
+git push
+make
+top
+ls
+make
+vim ch4_design.tex 
+make
+ls
+svn add *
+svn ocmmit
+svn commit
+git add .
+git commit -m '.'
+git push
+make
+ls
+git add .
+git commit -m  '.'
+git push
+ll
+make
+git add .
+git commit -m 'revise ch4'
+git pull
+vim ch1_introduction.tex 
+make
+vim ch1_introduction.tex 
+d
+svn add *
+svn commit
+vim ch4_design.tex 
+vim ch5_experiment.tex 
+ls
+ll
+ls
+vim ch1_introduction.tex 
+vim ch3_architecture.tex 
+ls
+vim ch5_experiment.tex 
+vim ch1_introduction.tex 
+vim abstractEN.tex 
+ls
+svn add *
+svn commit
+git add .
+git commit -m 'abstract'
+git push
+vim ch1_introduction.tex 
+ls
+vim ch3_architecture.tex 
+ls
+vim ch4_design.tex 
+make
+ls
+vim abstractCH.tex 
+ls
+vim ch2_background.tex 
+ls
+svn add *
+svn commit 
+ls
+vim ch1_introduction.tex 
+ls
+vim ch1_introduction.tex 
+ls
+svn add *
+svn commit
+ls
+git add .
+git commit -m '.'
+git push
+vim ch2
+vim ch2_background.tex 
+vim ch3_architecture.tex 
+make
+ls
+vim ch1_introduction.tex 
+vim ch2_background.tex 
+vim ch3_architecture.tex 
+vim ch4_design.tex 
+vim ch5_experiment.tex 
+ls
+make
+ls
+make
+ls
+make
+ls
+make
+:q
+ls
+git add .
+git commit -m '.'
+git push
+make
+ls
+cd figures/
+scp jeff@140.112.28.112:~/sel.png sel1.png
+ls
+cd ..
+make
+ls
+make
+vim abstract
+vim abstract.
+vim abstractEN.tex 
+make
+vim abstractEN.tex 
+make
+ls
+git add *
+git commit -m 'revise abstract and ch5'
+git push
+ls
+svn add *
+svn commit 
+make
+ls
+make
+ls
+vim ch1_introduction.tex 
+make
+ls
+gnome-open thesis.pdf 
+make
+ls
+cd Desktop/
+cd zec/
+cd 0.3.4b/
+sh start.sh 
+ls
+cd Desktop/
+cd zec/
+cd 0.3.4b/
+sh start.sh 
+ls
+cd bitfinex/
+cd websocket_api2/
+ls
+python t.py 
+vim t.py 
+ls
+cd ..
+ls
+cd bitfinexw
+cd bitfinex_wss/
+vim t.py 
+python t.py 
+ls
+python tew
+python tests.py 
+ls
+ll
+cd btfxwss/
+cd ..
+ls
+cd ..
+ls
+cd bitfinex
+ls
+python basic.py 
+ls
+vim basic.py 
+ls
+vim basic.py 
+cd bitfinex/
+ls
+vim client.py
+python backtest/
+cd ..
+python basic.py 
+la
+vim basic.py 
+ls
+cd test/
+python bitfinex_test.py 
+vim bitfinex_test.py 
+cd ..
+ls
+cd examples/
+cd ..
+cd bitfinex/
+ls
+vim client.py
+python client.py
+cd ..
+ls
+vim basic.py 
+ls
+cd ..
+ls
+cd ..
+ls
+sudo apt-get install npm
+npm 
+npm install bitfinex-api-node
+node -v
+wget -c http://nodejs.org/dist/v0.6.14/node-v0.6.14.tar.gz  
+tar zxf node-v0.6.14.tar.gz  
+cd node-v0.6.14  
+./configure
+make
+ls
+sudo make install  
+node
+node -v
+npm -v
+npm install connect
+npm install express
+ls
+cd ..
+ls
+node
+ls
+mkdir node
+ls
+mv node practice
+cd practice/
+ls
+vim web.js
+node web.js 
+vim web.js
+node web.js 
+ls
+npm install logger
+node web.js 
+ls
+rm web.js 
+vim web.js
+node web.js 
+vim web.js
+sudo apt-get install nodejs
+sudo apt-get install --reinstall nodejs
+node -v
+sudo apt-get remove nodejs
+sudo apt-get update
+node
+ls
+sudo apt-get autoremove nodejs
+node
+sudo apt-get purge nodejs
+sudo apt-get purge node
+ode
+node
+ls
+cd ..
+ls
+node -v
+where node
+whereis node
+ls
+cd node-v0.6.14/
+ls
+sudo make uninstall
+ls
+node
+cd ..
+node
+ls
+rm -rf node-v0.6.14
+rm node-v0.6.14.tar.gz 
+ls
+sudo apt-get install nodejs
+node
+nodejs
+ls
+cd practice/
+vim web.js 
+ls
+nodejs web.js 
+nodejs -v
+ls
+vim web.js 
+sudo npm cache clean -f
+npm
+sudo apt-get install npm
+curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+sudo apt-get install -y nodejs
+nodejs -v
+sudo npm install -g n
+sudo n latest
+nodejs -v
+node
+node -v
+node web.js 
+vim web.js 
+node web.js 
+ll
+vim web.js 
+npm test
+vim web.js 
+CD ..
+cd ..
+cd bitfinex/
+ls
+cd bitfinex
+python b
+python basic.py 
+vim basic.py 
+ls
+cd scripts/
+./bitfinex-poll-orderbook 
+ls
+cd ..
+ls
+python basic.py 
+ls
+vim basic.py 
+ls
+cd darknet-cpp/
+ls
+vim src/demo.c 
+ls
+git add .
+git commit -m ',.'
+git branch demo
+ls
+git checkout -b demo
+ls
+git checkout demo
+ls
+vim src/demo.c 
+ls
+lg
+ls
+git add .
+git branch -d demo
+ls
+git commit -m '.'
+git checkout master 
+git branch -d demo
+ls
+git branch -D demo
+ls
+ll
+ls
+git checkout TX1 
+ls
+vim src/demo.c 
+make darknet-cpp -j20
+./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train3.weights online_data/night_valid3/video/night_valid3.mp4 
+ls
+./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train4.weights online_data/night_valid4/video/night_valid4.mp4 
+ls
+vim src/demo.c 
+ls
+top
+ls
+cd ..
+cd video_selected/
+cd ..
+➜  darknet-cpp2 git:(TX1) ✗ ls
+scp -r /home/newslab/kucw/darknet-cpp2/video .
+scp -r newslab@140.112.28.114:/home/newslab/kucw/darknet-cpp2/video .
+ssh newslab@140.112.28.114
+cd ~
+cd Desktop/
+cd zec/
+cd 0.3.4b/
+sh start.sh 
+cd ~
+cd Data_Analyzer/
+vim video2img.py 
+vim img2video.py 
+ls
+ivm analyzer.py 
+vim analyzer.py 
+ls
+vim compare.py 
+cd ..
+cd online_data/
+cd night_train12/
+cd resize_crop/
+ls
+12.28.114
+sudo service lightdm restart
+sudo apt-get update
+sudo apt-get install --reinstall ubuntu-desktop
+sudo apt-get install unity
+sudo service lightdm restart
+export DISPLAY=:0
+sudo dconf reset -f /org/compiz/
+setsid unity
+ls
+sudo dconf reset -f /org/compiz/
+sudo unity --reset-icons &disown
+ls
+cd M17_Lin/
+cd trunk/
+ls
+cd thesis/
+vim ch4_design.tex 
+make
+svn add .
+svn commit 
+make
+vim acknowledgements.tex 
+ls
+vim Makefile 
+vim ntuvars.tex 
+vim thesis.tex 
+make
+ls
+vim ch1_introduction.tex 
+vim ch2_background.tex 
+vim ch3_architecture.tex 
+vim ch4_design.tex 
+vim ch1_introduction.tex 
+vim ch2_background.tex 
+vim ch3_architecture.tex 
+make
+vim ch4_design.tex 
+lds
+ls
+vim ch1_introduction.tex 
+ls
+vim ch2_background.tex 
+ls
+vim ch3_architecture.tex 
+vim ch4_design.tex 
+vim ch5_experiment.tex 
+vim ch6_conclusion.tex 
+ls
+vim abstract
+vim abstractEN.tex 
+ls
+vim ntuvars.tex 
+ls
+make
+ls
+ll
+ls
+git add .
+git commit -m 'spell'
+ls
+git push
+ls
+vim ch2_background.tex 
+vim ch5_experiment.tex 
+make
+vim ch6_conclusion.tex 
+ls
+vim abstract.
+vim abstractEN.tex 
+make
+vim ch1_introduction.tex 
+make
+vim ch5_experiment.tex 
+make
+ls
+cd figures/
+scp jeff@140.112.28.112:~/sel2.png
+scp jeff@140.112.28.112:~/sel2.png .
+ls
+cd ..
+vim ch5_experiment.tex 
+make
+vim ch5_experiment.tex 
+make
+gnome-open thesis.pdf 
+ls
+cd bitfinex/
+cd websocket_api2/
+python t.py 
+ls
+cd ..
+ls
+git clone https://github.com/nlsdfnbch/bitfinex_wss.git
+cd bitfinex
+cd ..
+cd bitfinex_wss/
+ls
+vim t.py
+ls
+cd ..
+ls
+cd websocket_api2/
+vim t.py 
+python t.py 
+ls
+cd ~
+ls
+ssh r04922108@linux1.csie.ntu.edu.tw
+ls
+ssh r04922108@linux2.csie.ntu.edu.tw
+ssh r04922108@linux1.csie.ntu.edu.tw
+ls
+cd Desktop/
+ls
+convert 畢業證書_2017072415355700.jpg -colorspace Gray destination.jpg
+sudo apt-get install imagemagick
+convert 畢業證書_2017072415355700.jpg -colorspace Gray destination.jpg
+convert 畢業證書_2017072415355700-1.png -colorspace Gray destination.png
+convert  -resize 50% destination.png dest.jpg
+ls
+cd darknet-cpp/
+ls
+vim src/demo.c 
+ls
+./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train4.weights online_data/night_valid4/video/night_valid4.mp4 
+ls
+vim src/demo.c 
+./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train4.weights online_data/night_valid4/video/night_valid4.mp4 
+ls
+cd darknet_v2
+ls
+vim src/demo.c 
+./darknet detector demo cfg/coco.data cfg/yolo.cfg yolo.weights 
+cd bitfinex/
+cd websocket_api2/
+python t.py 
+vim t.py 
+python t.py 
+vim t.py 
+cd ..
+cd bitfinex
+cd ..
+cd bitfinex_wss/
+python t.py 
+ls
+vim btfxwss/classes.py 
+python t.py 
+python3.5 t.py 
+vim btfxwss/classes.py 
+python3.5 t.py 
+vim btfxwss/classes.py 
+python3.5 t.py 
+cd ..
+cd websocket_api2/
+vim t.py 
+rm /home/newslab/.vim/dirs/tmp/t.py.swp
+ls
+vim t.py 
+ls
+cd ~
+ls
+cd online_data/
+ls
+cd night_train12/
+cd images/
+ls
+cd ..
+ls
+mkdir resize_crop
+ls
+cd resize_crop/
+ls
+vim a.py
+ssh jeff@140.112.28.112
+cd ~
+cd Desktop/
+cd xmr/
+ssh jeff@140.112.28.112
+wget http://download.teamviewer.com/download/teamviewer_i386.deb
+sudo apt-get install ./teamviewer_i386.deb
+ls teamviewer_i386.deb 
+sudo gdebi teamviewer_i386.deb
+sudo dpkg --add-architecture i386
+dpkg-deb -I teamviewer_i386.deb | grep Depends
+udo dpkg -i teamviewer_i386.debnewslab@newslab-All-Series ~  ls te
+teamviewer_i386.deb  test/                texmf/
+10:21:02
+newslab@newslab-All-Series ~  ls teamviewer_i386.deb
+teamviewer_i386.deb
+10:21:06
+newslab@newslab-All-Series ~  sudo gdebi teamviewer_i386.deb
+sudo: gdebi: command not found
+10:21:15
+newslab@newslab-All-Series ~  sudo dpkg --add-architecture i386
+10:21:21
+newslab@newslab-All-Series ~  dpkg-deb -I teamviewer_i386.deb | grep Depends
+10:21:30
+newslab@newslab-All-Series ~  udo dpkg -i teamviewer_i386.deb
+newslab  1:bash*                                            0.00 0.00 0.00 10:21
+jeff 1:ssh*                                                 0.08 0.02 0.01 10:21
+newslab@newslab-All-Series ~  ls te
+teamviewer_i386.deb  test/                texmf/
+10:21:02
+newslab@newslab-All-Series ~  ls teamviewer_i386.deb
+teamviewer_i386.deb
+10:21:06
+newslab@newslab-All-Series ~  sudo gdebi teamviewer_i386.deb
+sudo: gdebi: command not found
+10:21:15
+newslab@newslab-All-Series ~  sudo dpkg --add-architecture i386
+10:21:21
+newslab@newslab-All-Series ~  dpkg-deb -I teamviewer_i386.deb | grep Depends
+10:21:30
+newslab@newslab-All-Series ~  udo dpkg -i teamviewer_i386.debnews
+newslab  1:bash*                                            0.00 0.00 0.00 10:21
+jeff 1:ssh*                                                 0.08 0.02 0.01 10:21
+sudo dpkg -i teamviewer_i386.deb
+teamviewer 
+teamviewer Launching TeamViewer ...
+Starting network process (no daemon)
+/opt/teamviewer/tv_bin/teamviewerd: error while loading shared libraries: libdbus-1.so.3: cannot open shared object file: No such file or directory
+Network process already started (or error)
+Launching TeamViewer GUI ...
+10:22:30
+newslab@newslab-All-Series ~   teamviewer --version print version information
+10:23:04
+newslab@newslab-All-Series ~   teamviewer --passwd l3700108
+Error: You need root permissions for this operation
+10:23:12
+newslab@newslab-All-Series ~  teamviewer
+newslab  1:bash*                                            0.00 0.00 0.00 10:22
+jeff 1:ssh*                                                 0.03 0.01 0.00 10:22
+sudo  teamviewer --passwd l3700108
+wget http://www.teamviewer.com/download/teamviewer_linux.deb
+wget http://www.teamviewer.com/download/teamviewer_linux_x64.deb
+sudo dpkg -i teamviewer_linux_x64.debwget http://www.teamviewer.com/download/teamviewer_linux_x64.deb
+wget http://www.teamviewer.com/download/teamviewer_linux_x64.deb
+ls
+rm teamviewer_i386.deb 
+wget http://download.teamviewer.com/download/teamviewer_i386.deb
+sudo dpkg -i teamviewer_i386.deb
+原文網址：https://read01.com/QGnO.html
+sudo apt-get install –f
+sudo apt-get install –f teamviewer 
+sudo apt-get install ./teamviewer_i386.deb
+sudo dpkg --add-architecture i386
+sudo apt-get update
+sudo apt-get install gdebi
+sudo apt-get -f install
+teamviewer 
+teamviewer --passwd l3700108
+sudo teamviewer --passwd l3700108
+ls
+teamviewer --daemon
+sudo teamviewer --daemon
+sudo teamviewer --daemon start
+teamviewerd status
+vim /usr/bin/teamviewer 
+ls
+vim /usr/bin/teamviewer 
+/usr/bin/teamviewer –info
+teamviewer -info
+ls
+sudo reboot -now
+sudoreboot
+sudo reboot
+ls
+cd darknet_v2/
+ls
+cd ..
+cd darknet-cpp/
+ls
+scp newslab@140.112.28.114:~/demovideo/origin.mp4 .
+ls
+sudo apt-get install teamviewer
+teamviewer -info
+ls
+teamviewer restart
+sudo reboot
+ls
+teamviewer -info
+ls
+nvidia-smi -lms
+ls
+ll
+cd darknet-cpp/
+ls
+python train_lst_gen.py ../demo/tunnel/
+python train_lst_gen.py ../demo/tunnel/ tunnel.txt
+ls
+mv tunnel.txt ../demo/tunnel/
+ls
+cd ..
+cd demo
+cd tunnel/
+mkdir labels\
+mkdir labels
+ls
+vim a.py
+ls
+cd ..
+ls
+python annotation2yolo.py demo/tunnel/
+cd ..
+cd online_data/
+vim annotation2yolo.py 
+python annotation2yolo.py demo/tunnel/
+ls
+cd ..
+cd darknet-cpp
+ls
+cd src/
+ls
+cp track.* ../../darknet-cpp2/src/ 
+ls
+cd ..
+cd darknet-cpp2/
+make darknet-cpp
+make darknet-cpp -j8
+ls
+./darknet detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights 
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ls
+git add .
+ls
+vim .gitignore 
+make
+git add .
+ls
+ll
+cd train_model/
+ls
+cd ..
+ls
+cd scripts/
+cd ..
+ls
+cd results/
+ls
+cd ..
+cd o
+cd output/
+ls
+cd ..
+ls
+cd yolo_weights/
+cd ..
+vim .gitignore 
+git add .
+git commit -m '.'
+git checkout -b kucw
+ls
+vim src/demo.c
+ls
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+htop
+top
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ls
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ls
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ls
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ls
+vim src/demo.c 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+make darknet-cpp -j8
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+l
+ls
+cd ..
+cd demo
+cd tr
+cd tunnel/
+cd images/
+ls
+cd ..
+mkdir for_label
+ls
+cd for_label/
+cd ..
+ls
+cd ..
+cd night_train2/
+cd ..
+cd demo/
+cd tr
+cd tunnel/
+mkdir annotations
+ls
+cd ..
+ls
+cd ..
+cd -
+cd demo
+cd tunnel/
+￼
+ls
+cd ~
+cd darknet-cpp
+top
+ls
+vim src/demo.c 
+ls
+lds
+ls
+git add .
+git commit -m '.'
+git checkout master
+vim src/demo.c 
+ls
+ls
+cd ~
+cd labelImg/
+python labelImg.py 
+cd ..
+cd darknet-cpp/
+./darknet detector demo cfg/coco.data cfg/yolo.cfg yolo.weights 
+./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train4.weights online_data/night_valid4/video/night_valid4.mp4 
+ffmpeg -i origin.mp4 -filter:v "crop=0:552:961:528" -c:a copy out.mp4
+ffmpeg -i origin.mp4 -filter:v "crop=552:0:961:528" -c:a copy out.mp4
+ffmpeg -i origin.mp4 -filter:v "crop=552:0:528:961" -c:a copy out.mp4
+ffmpeg -i origin.mp4 -filter:v "crop=551:0:528:961" -c:a copy out.mp4
+ffmpeg -i origin.mp4 -filter:v "crop=961:528:0:552" -c:a copy out.mp4
+ffmpeg -i out.mp4 -ss 00:00:00 -t 00:01:05 -async 1 origin1X.mp4
+top
+cd /media/newslab/UUI/
+ls
+touch a
+ls
+rm a
+kazam 
+ls
+mv /tmp/螢幕快照 2017-08-25 13:27:39.png　.
+mv /tmp/"螢幕快照 2017-08-25 13:27:39.png"　a.png
+ls
+cd darknet-cpp
+ls
+make 
+ls
+cd darknet-cpp2/
+ls
+cat README.md 
+vim README.md 
+make -
+make -B
+make -Bn
+make -Bk
+make -Bkj10
+ls
+mv darknet-cpp bk
+make -Bkj10
+ls
+fg
+./darknet-cpp 
+ls
+vim src/darknet.c 
+ls
+vim README.md 
+ls
+vim bk 
+rm bk 
+ls
+cd backup/
+ls
+cd ..
+who
+ls
+cd ..
+ls
+cd ..
+ls
+cd newslab/
+ls
+ps -aux
+ps -aux | more
+ht_train4.weights online_data/night_valid4/video/night_valid4.mp4 
+ls
+ls
+teamviewer status
+teamviewer --status
+teamviewer --help
+teamviewer help
+teamviewer info
+ssh jeff@140.112.28.112
+ls
+cd darknet-cpp/
+vim src/demo.c 
+ls
+ffmpeg -i origin.mp4 -ss 00:00:20 -t 00:00:60 -async 1 tunnel.mp4
+ffmpeg -i origin.mp4 -ss 00:20:00 -t 00:60:00 -async 1 tunnel.mp4
+ffmpeg -i origin.mp4 -ss 00:00:20 -t 00:01:00 -async 1 tunnel.mp4
+ffmpeg -i origin.mp4 -ss 00:00:20 -t 40 -async 1 tunnel.mp4
+cd ~
+cd Data_Analyzer/
+ls
+python video2img.py ~/darknet-cpp/tunnel.mp4 
+python video2img.py ~/darknet-cpp/tunnel.mp4 ../online_data/demo/tunnel/
+ls
+cd ..
+cd online_data/
+ls
+cd lst_gen/
+ls
+vim a.
+vim a.py 
+ls
+vim train_lst_gen.py 
+cd ..
+ls
+cd darknet-cpp/
+vim cfg/coco.data 
+ls
+./darknet-cpp detector train cfg/coco.data yolo-demo.cfg yolo.weights 
+make darknet-cpp -j20
+./darknet-cpp detector train cfg/coco.data yolo-demo.cfg yolo.weights 
+make clean
+make clean-cpp 
+make darknet-cpp -j20
+./darknet-cpp detector train cfg/coco.data yolo-demo.cfg yolo.weights 
+ls
+vim cfg/coco.data 
+vim data/coco.names 
+./darknet-cpp detector train cfg/coco.data yolo-demo.cfg yolo.weights 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_500800.weights online_data/demo/tunnel/tunnel.mp4 
+vim src/detector.c 
+vim src/demo.c 
+vim yolo-demo.cfg 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_500800.weights online_data/demo/tunnel/tunnel.mp4 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4 
+vim src/detector.c 
+make darknet-cpp -j20
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4 
+./darknet-cpp detector train cfg/coco.data yolo-demo.cfg yolo.weights 
+vim yolo-demo.cfg 
+./darknet-cpp detector train cfg/coco.data yolo-demo.cfg yolo.weights 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_501200.weights online_data/demo/tunnel/tunnel.mp4 
+vim yolo-demo.cfg 
+./darknet-cpp detector train cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_501200.weights 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_501600.weights online_data/demo/tunnel/tunnel.mp4 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_500300.weights online_data/demo/tunnel/tunnel.mp4 
+./darknet-cpp detector train cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_501600.weights 
+vim yolo-demo.cfg 
+./darknet-cpp detector train cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_501600.weights 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502000.weights online_data/demo/tunnel/tunnel.mp4 
+./darknet-cpp detector train cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502000.weights 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502000.weights online_data/demo/tunnel/tunnel.mp4 
+./darknet-cpp detector train cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502200.weights 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502500.weights online_data/demo/tunnel/tunnel.mp4 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502500.weights origin1X.mp4 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502500.weights online_data/demo/tunnel/tunnel.mp4 
+vim yolo-demo.cfg 
+./darknet-cpp detector train cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502500.weights 
+vim yolo-demo.cfg 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502500.weights online_data/demo/tunnel/tunnel.mp4 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_503000.weights online_data/demo/tunnel/tunnel.mp4 
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4 
+ls
+scp yolo-demo.cfg newslab@140.112.28.114:~/kucw/darknet-cpp2/train_model/
+scp ../yolo_weights/yolo-demo_503000.weights  newslab@140.112.28.114:~/kucw/darknet-cpp2/train_model/
+scp yolo.weights  newslab@140.112.28.114:~/kucw/darknet-cpp2/train_model/
+ffmpeg -i origin.mp4 -ss 00:00:00 -t 00:01:15 -async 1 demo_origin_y3.mp4
+ls
+scp demo_origin_y3.mp4   newslab@140.112.28.114:~/
+ls
+vim src/demo.c 
+ls
+ll
+vim src/demo.c 
+ls
+cd ..
+ls
+scp -r newslab@140.112.28.114:~/kucw/darknet-cpp2 .
+ls
+cd darknet-cpp2/
+vim src/demo.c 
+ls
+vim src/demo.c
+ls
+vim src/demo.c
+ls
+cd ..
+ls
+cd darknetc
+cd darknet-cp
+cd darknet-cpp
+ls
+vim ls
+ls
+cd src
+pwd
+vim src/demo.c
+vim demo.c 
+ls
+cd ..
+ls
+cd darknet-cpp2/
+ls
+vim src/demo.c 
+ls
+vim t.sh 
+ls
+ifconfig
+pwd
+make
+ls
+make
+vim src/image.c 
+ls
+vim Makefile 
+make
+fg
+make
+ls
+cd src/
+ls
+make
+cd ..
+ls
+make
+make darknet
+ls
+./darknet-cpp 
+vim t.sh 
+./train_model/
+sh t.sh
+bash t.sh
+ls
+./darknet-cpp 
+vim README.md 
+fg
+ls
+make -B
+ls src/
+vim Makefile 
+fg
+make -B
+ls
+ls src/
+fg
+make
+fg
+git st
+fg
+git status
+fg
+ls
+fg
+make -B
+fg
+make -B
+fg
+make -B
+fg
+ls
+cd darknet
+ls
+cd ..
+ls
+cd elastic/
+ls
+cd ..
+ls
+cd darknet
+ls
+git st
+git status
+ls
+cat README.md 
+cd ..
+ls
+cd darknet_v2/
+ls
+cat README.md 
+ls
+cd ..
+ls
+cd darknet
+ls
+cat bad.list 
+cd src/
+ls
+cd ..
+ls
+cd /tmp/darknet-cpp2/
+./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4
+ls
+cd
+ssh newslab@140.112.28.114
+sudo rmmod nvidia_uvm
