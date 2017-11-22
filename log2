@@ -1,0 +1,1000 @@
+ 1046  python basic.py 
+ 1047  ls
+ 1048  vim basic.py 
+ 1049  ls
+ 1050  cd darknet-cpp/
+ 1051  ls
+ 1052  vim src/demo.c 
+ 1053  ls
+ 1054  git add .
+ 1055  git commit -m ',.'
+ 1056  git branch demo
+ 1057  ls
+ 1058  git checkout -b demo
+ 1059  ls
+ 1060  git checkout demo
+ 1061  ls
+ 1062  vim src/demo.c 
+ 1063  ls
+ 1064  lg
+ 1065  ls
+ 1066  git add .
+ 1067  git branch -d demo
+ 1068  ls
+ 1069  git commit -m '.'
+ 1070  git checkout master 
+ 1071  git branch -d demo
+ 1072  ls
+ 1073  git branch -D demo
+ 1074  ls
+ 1075  ll
+ 1076  ls
+ 1077  git checkout TX1 
+ 1078  ls
+ 1079  vim src/demo.c 
+ 1080  make darknet-cpp -j20
+ 1081  ./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train3.weights online_data/night_valid3/video/night_valid3.mp4 
+ 1082  ls
+ 1083  ./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train4.weights online_data/night_valid4/video/night_valid4.mp4 
+ 1084  ls
+ 1085  vim src/demo.c 
+ 1086  ls
+ 1087  top
+ 1088  ls
+ 1089  cd ..
+ 1090  cd video_selected/
+ 1091  cd ..
+ 1092  ➜  darknet-cpp2 git:(TX1) ✗ ls
+ 1093  scp -r /home/newslab/kucw/darknet-cpp2/video .
+ 1094  scp -r newslab@140.112.28.114:/home/newslab/kucw/darknet-cpp2/video .
+ 1095  ssh newslab@140.112.28.114
+ 1096  cd ~
+ 1097  cd Desktop/
+ 1098  cd zec/
+ 1099  cd 0.3.4b/
+ 1100  sh start.sh 
+ 1101  cd ~
+ 1102  cd Data_Analyzer/
+ 1103  vim video2img.py 
+ 1104  vim img2video.py 
+ 1105  ls
+ 1106  ivm analyzer.py 
+ 1107  vim analyzer.py 
+ 1108  ls
+ 1109  vim compare.py 
+ 1110  cd ..
+ 1111  cd online_data/
+ 1112  cd night_train12/
+ 1113  cd resize_crop/
+ 1114  ls
+ 1115  12.28.114
+ 1116  sudo service lightdm restart
+ 1117  sudo apt-get update
+ 1118  sudo apt-get install --reinstall ubuntu-desktop
+ 1119  sudo apt-get install unity
+ 1120  sudo service lightdm restart
+ 1121  export DISPLAY=:0
+ 1122  sudo dconf reset -f /org/compiz/
+ 1123  setsid unity
+ 1124  ls
+ 1125  sudo dconf reset -f /org/compiz/
+ 1126  sudo unity --reset-icons &disown
+ 1127  ls
+ 1128  cd M17_Lin/
+ 1129  cd trunk/
+ 1130  ls
+ 1131  cd thesis/
+ 1132  vim ch4_design.tex 
+ 1133  make
+ 1134  svn add .
+ 1135  svn commit 
+ 1136  make
+ 1137  vim acknowledgements.tex 
+ 1138  ls
+ 1139  vim Makefile 
+ 1140  vim ntuvars.tex 
+ 1141  vim thesis.tex 
+ 1142  make
+ 1143  ls
+ 1144  vim ch1_introduction.tex 
+ 1145  vim ch2_background.tex 
+ 1146  vim ch3_architecture.tex 
+ 1147  vim ch4_design.tex 
+ 1148  vim ch1_introduction.tex 
+ 1149  vim ch2_background.tex 
+ 1150  vim ch3_architecture.tex 
+ 1151  make
+ 1152  vim ch4_design.tex 
+ 1153  lds
+ 1154  ls
+ 1155  vim ch1_introduction.tex 
+ 1156  ls
+ 1157  vim ch2_background.tex 
+ 1158  ls
+ 1159  vim ch3_architecture.tex 
+ 1160  vim ch4_design.tex 
+ 1161  vim ch5_experiment.tex 
+ 1162  vim ch6_conclusion.tex 
+ 1163  ls
+ 1164  vim abstract
+ 1165  vim abstractEN.tex 
+ 1166  ls
+ 1167  vim ntuvars.tex 
+ 1168  ls
+ 1169  make
+ 1170  ls
+ 1171  ll
+ 1172  ls
+ 1173  git add .
+ 1174  git commit -m 'spell'
+ 1175  ls
+ 1176  git push
+ 1177  ls
+ 1178  vim ch2_background.tex 
+ 1179  vim ch5_experiment.tex 
+ 1180  make
+ 1181  vim ch6_conclusion.tex 
+ 1182  ls
+ 1183  vim abstract.
+ 1184  vim abstractEN.tex 
+ 1185  make
+ 1186  vim ch1_introduction.tex 
+ 1187  make
+ 1188  vim ch5_experiment.tex 
+ 1189  make
+ 1190  ls
+ 1191  cd figures/
+ 1192  scp jeff@140.112.28.112:~/sel2.png
+ 1193  scp jeff@140.112.28.112:~/sel2.png .
+ 1194  ls
+ 1195  cd ..
+ 1196  vim ch5_experiment.tex 
+ 1197  make
+ 1198  vim ch5_experiment.tex 
+ 1199  make
+ 1200  gnome-open thesis.pdf 
+ 1201  ls
+ 1202  cd bitfinex/
+ 1203  cd websocket_api2/
+ 1204  python t.py 
+ 1205  ls
+ 1206  cd ..
+ 1207  ls
+ 1208  git clone https://github.com/nlsdfnbch/bitfinex_wss.git
+ 1209  cd bitfinex
+ 1210  cd ..
+ 1211  cd bitfinex_wss/
+ 1212  ls
+ 1213  vim t.py
+ 1214  ls
+ 1215  cd ..
+ 1216  ls
+ 1217  cd websocket_api2/
+ 1218  vim t.py 
+ 1219  python t.py 
+ 1220  ls
+ 1221  cd ~
+ 1222  ls
+ 1223  ssh r04922108@linux1.csie.ntu.edu.tw
+ 1224  ls
+ 1225  ssh r04922108@linux2.csie.ntu.edu.tw
+ 1226  ssh r04922108@linux1.csie.ntu.edu.tw
+ 1227  ls
+ 1228  cd Desktop/
+ 1229  ls
+ 1230  convert 畢業證書_2017072415355700.jpg -colorspace Gray destination.jpg
+ 1231  sudo apt-get install imagemagick
+ 1232  convert 畢業證書_2017072415355700.jpg -colorspace Gray destination.jpg
+ 1233  convert 畢業證書_2017072415355700-1.png -colorspace Gray destination.png
+ 1234  convert  -resize 50% destination.png dest.jpg
+ 1235  ls
+ 1236  cd darknet-cpp/
+ 1237  ls
+ 1238  vim src/demo.c 
+ 1239  ls
+ 1240  ./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train4.weights online_data/night_valid4/video/night_valid4.mp4 
+ 1241  ls
+ 1242  vim src/demo.c 
+ 1243  ./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train4.weights online_data/night_valid4/video/night_valid4.mp4 
+ 1244  ls
+ 1245  cd darknet_v2
+ 1246  ls
+ 1247  vim src/demo.c 
+ 1248  ./darknet detector demo cfg/coco.data cfg/yolo.cfg yolo.weights 
+ 1249  cd bitfinex/
+ 1250  cd websocket_api2/
+ 1251  python t.py 
+ 1252  vim t.py 
+ 1253  python t.py 
+ 1254  vim t.py 
+ 1255  cd ..
+ 1256  cd bitfinex
+ 1257  cd ..
+ 1258  cd bitfinex_wss/
+ 1259  python t.py 
+ 1260  ls
+ 1261  vim btfxwss/classes.py 
+ 1262  python t.py 
+ 1263  python3.5 t.py 
+ 1264  vim btfxwss/classes.py 
+ 1265  python3.5 t.py 
+ 1266  vim btfxwss/classes.py 
+ 1267  python3.5 t.py 
+ 1268  cd ..
+ 1269  cd websocket_api2/
+ 1270  vim t.py 
+ 1271  rm /home/newslab/.vim/dirs/tmp/t.py.swp
+ 1272  ls
+ 1273  vim t.py 
+ 1274  ls
+ 1275  cd ~
+ 1276  ls
+ 1277  cd online_data/
+ 1278  ls
+ 1279  cd night_train12/
+ 1280  cd images/
+ 1281  ls
+ 1282  cd ..
+ 1283  ls
+ 1284  mkdir resize_crop
+ 1285  ls
+ 1286  cd resize_crop/
+ 1287  ls
+ 1288  vim a.py
+ 1289  ssh jeff@140.112.28.112
+ 1290  cd ~
+ 1291  cd Desktop/
+ 1292  cd xmr/
+ 1293  ssh jeff@140.112.28.112
+ 1294  wget http://download.teamviewer.com/download/teamviewer_i386.deb
+ 1295  sudo apt-get install ./teamviewer_i386.deb
+ 1296  ls teamviewer_i386.deb 
+ 1297  sudo gdebi teamviewer_i386.deb
+ 1298  sudo dpkg --add-architecture i386
+ 1299  dpkg-deb -I teamviewer_i386.deb | grep Depends
+ 1300  udo dpkg -i teamviewer_i386.debnewslab@newslab-All-Series ~  ls te
+ 1301  teamviewer_i386.deb  test/                texmf/
+ 1302  10:21:02
+ 1303  newslab@newslab-All-Series ~  ls teamviewer_i386.deb
+ 1304  teamviewer_i386.deb
+ 1305  10:21:06
+ 1306  newslab@newslab-All-Series ~  sudo gdebi teamviewer_i386.deb
+ 1307  sudo: gdebi: command not found
+ 1308  10:21:15
+ 1309  newslab@newslab-All-Series ~  sudo dpkg --add-architecture i386
+ 1310  10:21:21
+ 1311  newslab@newslab-All-Series ~  dpkg-deb -I teamviewer_i386.deb | grep Depends
+ 1312  10:21:30
+ 1313  newslab@newslab-All-Series ~  udo dpkg -i teamviewer_i386.deb
+ 1314  newslab  1:bash*                                            0.00 0.00 0.00 10:21
+ 1315  jeff 1:ssh*                                                 0.08 0.02 0.01 10:21
+ 1316  newslab@newslab-All-Series ~  ls te
+ 1317  teamviewer_i386.deb  test/                texmf/
+ 1318  10:21:02
+ 1319  newslab@newslab-All-Series ~  ls teamviewer_i386.deb
+ 1320  teamviewer_i386.deb
+ 1321  10:21:06
+ 1322  newslab@newslab-All-Series ~  sudo gdebi teamviewer_i386.deb
+ 1323  sudo: gdebi: command not found
+ 1324  10:21:15
+ 1325  newslab@newslab-All-Series ~  sudo dpkg --add-architecture i386
+ 1326  10:21:21
+ 1327  newslab@newslab-All-Series ~  dpkg-deb -I teamviewer_i386.deb | grep Depends
+ 1328  10:21:30
+ 1329  newslab@newslab-All-Series ~  udo dpkg -i teamviewer_i386.debnews
+ 1330  newslab  1:bash*                                            0.00 0.00 0.00 10:21
+ 1331  jeff 1:ssh*                                                 0.08 0.02 0.01 10:21
+ 1332  sudo dpkg -i teamviewer_i386.deb
+ 1333  teamviewer 
+ 1334  teamviewer Launching TeamViewer ...
+ 1335  Starting network process (no daemon)
+ 1336  /opt/teamviewer/tv_bin/teamviewerd: error while loading shared libraries: libdbus-1.so.3: cannot open shared object file: No such file or directory
+ 1337  Network process already started (or error)
+ 1338  Launching TeamViewer GUI ...
+ 1339  10:22:30
+ 1340  newslab@newslab-All-Series ~   teamviewer --version print version information
+ 1341  10:23:04
+ 1342  newslab@newslab-All-Series ~   teamviewer --passwd l3700108
+ 1343  Error: You need root permissions for this operation
+ 1344  10:23:12
+ 1345  newslab@newslab-All-Series ~  teamviewer
+ 1346  newslab  1:bash*                                            0.00 0.00 0.00 10:22
+ 1347  jeff 1:ssh*                                                 0.03 0.01 0.00 10:22
+ 1348  sudo  teamviewer --passwd l3700108
+ 1349  wget http://www.teamviewer.com/download/teamviewer_linux.deb
+ 1350  wget http://www.teamviewer.com/download/teamviewer_linux_x64.deb
+ 1351  sudo dpkg -i teamviewer_linux_x64.debwget http://www.teamviewer.com/download/teamviewer_linux_x64.deb
+ 1352  wget http://www.teamviewer.com/download/teamviewer_linux_x64.deb
+ 1353  ls
+ 1354  rm teamviewer_i386.deb 
+ 1355  wget http://download.teamviewer.com/download/teamviewer_i386.deb
+ 1356  sudo dpkg -i teamviewer_i386.deb
+ 1357  原文網址：https://read01.com/QGnO.html
+ 1358  sudo apt-get install –f
+ 1359  sudo apt-get install –f teamviewer 
+ 1360  sudo apt-get install ./teamviewer_i386.deb
+ 1361  sudo dpkg --add-architecture i386
+ 1362  sudo apt-get update
+ 1363  sudo apt-get install gdebi
+ 1364  sudo apt-get -f install
+ 1365  teamviewer 
+ 1366  teamviewer --passwd l3700108
+ 1367  sudo teamviewer --passwd l3700108
+ 1368  ls
+ 1369  teamviewer --daemon
+ 1370  sudo teamviewer --daemon
+ 1371  sudo teamviewer --daemon start
+ 1372  teamviewerd status
+ 1373  vim /usr/bin/teamviewer 
+ 1374  ls
+ 1375  vim /usr/bin/teamviewer 
+ 1376  /usr/bin/teamviewer –info
+ 1377  teamviewer -info
+ 1378  ls
+ 1379  sudo reboot -now
+ 1380  sudoreboot
+ 1381  sudo reboot
+ 1382  ls
+ 1383  cd darknet_v2/
+ 1384  ls
+ 1385  cd ..
+ 1386  cd darknet-cpp/
+ 1387  ls
+ 1388  scp newslab@140.112.28.114:~/demovideo/origin.mp4 .
+ 1389  ls
+ 1390  sudo apt-get install teamviewer
+ 1391  teamviewer -info
+ 1392  ls
+ 1393  teamviewer restart
+ 1394  sudo reboot
+ 1395  ls
+ 1396  teamviewer -info
+ 1397  ls
+ 1398  nvidia-smi -lms
+ 1399  ls
+ 1400  ll
+ 1401  cd darknet-cpp/
+ 1402  ls
+ 1403  python train_lst_gen.py ../demo/tunnel/
+ 1404  python train_lst_gen.py ../demo/tunnel/ tunnel.txt
+ 1405  ls
+ 1406  mv tunnel.txt ../demo/tunnel/
+ 1407  ls
+ 1408  cd ..
+ 1409  cd demo
+ 1410  cd tunnel/
+ 1411  mkdir labels\
+ 1412  mkdir labels
+ 1413  ls
+ 1414  vim a.py
+ 1415  ls
+ 1416  cd ..
+ 1417  ls
+ 1418  python annotation2yolo.py demo/tunnel/
+ 1419  cd ..
+ 1420  cd online_data/
+ 1421  vim annotation2yolo.py 
+ 1422  python annotation2yolo.py demo/tunnel/
+ 1423  ls
+ 1424  cd ..
+ 1425  cd darknet-cpp
+ 1426  ls
+ 1427  cd src/
+ 1428  ls
+ 1429  cp track.* ../../darknet-cpp2/src/ 
+ 1430  ls
+ 1431  cd ..
+ 1432  cd darknet-cpp2/
+ 1433  make darknet-cpp
+ 1434  make darknet-cpp -j8
+ 1435  ls
+ 1436  ./darknet detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights 
+ 1437  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1438  make darknet-cpp -j8
+ 1439  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1440  make darknet-cpp -j8
+ 1441  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1442  make darknet-cpp -j8
+ 1443  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1444  make darknet-cpp -j8
+ 1445  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1446  make darknet-cpp -j8
+ 1447  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1448  make darknet-cpp -j8
+ 1449  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1450  make darknet-cpp -j8
+ 1451  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1452  make darknet-cpp -j8
+ 1453  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1454  make darknet-cpp -j8
+ 1455  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1456  make darknet-cpp -j8
+ 1457  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1458  make darknet-cpp -j8
+ 1459  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1460  make darknet-cpp -j8
+ 1461  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1462  ls
+ 1463  git add .
+ 1464  ls
+ 1465  vim .gitignore 
+ 1466  make
+ 1467  git add .
+ 1468  ls
+ 1469  ll
+ 1470  cd train_model/
+ 1471  ls
+ 1472  cd ..
+ 1473  ls
+ 1474  cd scripts/
+ 1475  cd ..
+ 1476  ls
+ 1477  cd results/
+ 1478  ls
+ 1479  cd ..
+ 1480  cd o
+ 1481  cd output/
+ 1482  ls
+ 1483  cd ..
+ 1484  ls
+ 1485  cd yolo_weights/
+ 1486  cd ..
+ 1487  vim .gitignore 
+ 1488  git add .
+ 1489  git commit -m '.'
+ 1490  git checkout -b kucw
+ 1491  ls
+ 1492  vim src/demo.c
+ 1493  ls
+ 1494  make darknet-cpp -j8
+ 1495  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1496  make darknet-cpp -j8
+ 1497  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1498  make darknet-cpp -j8
+ 1499  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1500  make darknet-cpp -j8
+ 1501  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1502  make darknet-cpp -j8
+ 1503  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1504  make darknet-cpp -j8
+ 1505  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1506  make darknet-cpp -j8
+ 1507  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1508  make darknet-cpp -j8
+ 1509  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1510  htop
+ 1511  top
+ 1512  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1513  make darknet-cpp -j8
+ 1514  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1515  make darknet-cpp -j8
+ 1516  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1517  make darknet-cpp -j8
+ 1518  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1519  ls
+ 1520  make darknet-cpp -j8
+ 1521  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1522  make darknet-cpp -j8
+ 1523  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1524  make darknet-cpp -j8
+ 1525  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1526  make darknet-cpp -j8
+ 1527  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1528  make darknet-cpp -j8
+ 1529  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1530  make darknet-cpp -j8
+ 1531  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1532  make darknet-cpp -j8
+ 1533  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1534  make darknet-cpp -j8
+ 1535  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1536  make darknet-cpp -j8
+ 1537  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1538  make darknet-cpp -j8
+ 1539  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1540  make darknet-cpp -j8
+ 1541  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1542  make darknet-cpp -j8
+ 1543  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1544  make darknet-cpp -j8
+ 1545  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1546  make darknet-cpp -j8
+ 1547  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1548  make darknet-cpp -j8
+ 1549  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1550  ls
+ 1551  make darknet-cpp -j8
+ 1552  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1553  ls
+ 1554  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1555  ls
+ 1556  vim src/demo.c 
+ 1557  make darknet-cpp -j8
+ 1558  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1559  make darknet-cpp -j8
+ 1560  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1561  make darknet-cpp -j8
+ 1562  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1563  make darknet-cpp -j8
+ 1564  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1565  make darknet-cpp -j8
+ 1566  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1567  make darknet-cpp -j8
+ 1568  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1569  make darknet-cpp -j8
+ 1570  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1571  make darknet-cpp -j8
+ 1572  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1573  make darknet-cpp -j8
+ 1574  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1575  make darknet-cpp -j8
+ 1576  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1577  make darknet-cpp -j8
+ 1578  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1579  make darknet-cpp -j8
+ 1580  ./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/demo_origin_y3.mp4 
+ 1581  l
+ 1582  ls
+ 1583  cd ..
+ 1584  cd demo
+ 1585  cd tr
+ 1586  cd tunnel/
+ 1587  cd images/
+ 1588  ls
+ 1589  cd ..
+ 1590  mkdir for_label
+ 1591  ls
+ 1592  cd for_label/
+ 1593  cd ..
+ 1594  ls
+ 1595  cd ..
+ 1596  cd night_train2/
+ 1597  cd ..
+ 1598  cd demo/
+ 1599  cd tr
+ 1600  cd tunnel/
+ 1601  mkdir annotations
+ 1602  ls
+ 1603  cd ..
+ 1604  ls
+ 1605  cd ..
+ 1606  cd -
+ 1607  cd demo
+ 1608  cd tunnel/
+ 1609  ￼
+ 1610  ls
+ 1611  cd ~
+ 1612  cd darknet-cpp
+ 1613  top
+ 1614  ls
+ 1615  vim src/demo.c 
+ 1616  ls
+ 1617  lds
+ 1618  ls
+ 1619  git add .
+ 1620  git commit -m '.'
+ 1621  git checkout master
+ 1622  vim src/demo.c 
+ 1623  ls
+ 1624  ls
+ 1625  cd ~
+ 1626  cd labelImg/
+ 1627  python labelImg.py 
+ 1628  cd ..
+ 1629  cd darknet-cpp/
+ 1630  ./darknet detector demo cfg/coco.data cfg/yolo.cfg yolo.weights 
+ 1631  ./darknet-cpp detector demo data/voc-kitti.data cfg/tiny-yolo-voc-kitti.cfg ../yolo_weights/night_train4.weights online_data/night_valid4/video/night_valid4.mp4 
+ 1632  ffmpeg -i origin.mp4 -filter:v "crop=0:552:961:528" -c:a copy out.mp4
+ 1633  ffmpeg -i origin.mp4 -filter:v "crop=552:0:961:528" -c:a copy out.mp4
+ 1634  ffmpeg -i origin.mp4 -filter:v "crop=552:0:528:961" -c:a copy out.mp4
+ 1635  ffmpeg -i origin.mp4 -filter:v "crop=551:0:528:961" -c:a copy out.mp4
+ 1636  ffmpeg -i origin.mp4 -filter:v "crop=961:528:0:552" -c:a copy out.mp4
+ 1637  ffmpeg -i out.mp4 -ss 00:00:00 -t 00:01:05 -async 1 origin1X.mp4
+ 1638  top
+ 1639  cd /media/newslab/UUI/
+ 1640  ls
+ 1641  touch a
+ 1642  ls
+ 1643  rm a
+ 1644  kazam 
+ 1645  ls
+ 1646  mv /tmp/螢幕快照 2017-08-25 13:27:39.png　.
+ 1647  mv /tmp/"螢幕快照 2017-08-25 13:27:39.png"　a.png
+ 1648  ls
+ 1649  cd darknet-cpp
+ 1650  ls
+ 1651  make 
+ 1652  ls
+ 1653  cd darknet-cpp2/
+ 1654  ls
+ 1655  cat README.md 
+ 1656  vim README.md 
+ 1657  make -
+ 1658  make -B
+ 1659  make -Bn
+ 1660  make -Bk
+ 1661  make -Bkj10
+ 1662  ls
+ 1663  mv darknet-cpp bk
+ 1664  make -Bkj10
+ 1665  ls
+ 1666  fg
+ 1667  ./darknet-cpp 
+ 1668  ls
+ 1669  vim src/darknet.c 
+ 1670  ls
+ 1671  vim README.md 
+ 1672  ls
+ 1673  vim bk 
+ 1674  rm bk 
+ 1675  ls
+ 1676  cd backup/
+ 1677  ls
+ 1678  cd ..
+ 1679  who
+ 1680  ls
+ 1681  cd ..
+ 1682  ls
+ 1683  cd ..
+ 1684  ls
+ 1685  cd newslab/
+ 1686  ls
+ 1687  ps -aux
+ 1688  ps -aux | more
+ 1689  ht_train4.weights online_data/night_valid4/video/night_valid4.mp4 
+ 1690  ls
+ 1691  ls
+ 1692  teamviewer status
+ 1693  teamviewer --status
+ 1694  teamviewer --help
+ 1695  teamviewer help
+ 1696  teamviewer info
+ 1697  ssh jeff@140.112.28.112
+ 1698  ls
+ 1699  cd darknet-cpp/
+ 1700  vim src/demo.c 
+ 1701  ls
+ 1702  ffmpeg -i origin.mp4 -ss 00:00:20 -t 00:00:60 -async 1 tunnel.mp4
+ 1703  ffmpeg -i origin.mp4 -ss 00:20:00 -t 00:60:00 -async 1 tunnel.mp4
+ 1704  ffmpeg -i origin.mp4 -ss 00:00:20 -t 00:01:00 -async 1 tunnel.mp4
+ 1705  ffmpeg -i origin.mp4 -ss 00:00:20 -t 40 -async 1 tunnel.mp4
+ 1706  cd ~
+ 1707  cd Data_Analyzer/
+ 1708  ls
+ 1709  python video2img.py ~/darknet-cpp/tunnel.mp4 
+ 1710  python video2img.py ~/darknet-cpp/tunnel.mp4 ../online_data/demo/tunnel/
+ 1711  ls
+ 1712  cd ..
+ 1713  cd online_data/
+ 1714  ls
+ 1715  cd lst_gen/
+ 1716  ls
+ 1717  vim a.
+ 1718  vim a.py 
+ 1719  ls
+ 1720  vim train_lst_gen.py 
+ 1721  cd ..
+ 1722  ls
+ 1723  cd darknet-cpp/
+ 1724  vim cfg/coco.data 
+ 1725  ls
+ 1726  ./darknet-cpp detector train cfg/coco.data yolo-demo.cfg yolo.weights 
+ 1727  make darknet-cpp -j20
+ 1728  ./darknet-cpp detector train cfg/coco.data yolo-demo.cfg yolo.weights 
+ 1729  make clean
+ 1730  make clean-cpp 
+ 1731  make darknet-cpp -j20
+ 1732  ./darknet-cpp detector train cfg/coco.data yolo-demo.cfg yolo.weights 
+ 1733  ls
+ 1734  vim cfg/coco.data 
+ 1735  vim data/coco.names 
+ 1736  ./darknet-cpp detector train cfg/coco.data yolo-demo.cfg yolo.weights 
+ 1737  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_500800.weights online_data/demo/tunnel/tunnel.mp4 
+ 1738  vim src/detector.c 
+ 1739  vim src/demo.c 
+ 1740  vim yolo-demo.cfg 
+ 1741  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_500800.weights online_data/demo/tunnel/tunnel.mp4 
+ 1742  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4 
+ 1743  vim src/detector.c 
+ 1744  make darknet-cpp -j20
+ 1745  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4 
+ 1746  ./darknet-cpp detector train cfg/coco.data yolo-demo.cfg yolo.weights 
+ 1747  vim yolo-demo.cfg 
+ 1748  ./darknet-cpp detector train cfg/coco.data yolo-demo.cfg yolo.weights 
+ 1749  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_501200.weights online_data/demo/tunnel/tunnel.mp4 
+ 1750  vim yolo-demo.cfg 
+ 1751  ./darknet-cpp detector train cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_501200.weights 
+ 1752  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_501600.weights online_data/demo/tunnel/tunnel.mp4 
+ 1753  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4 
+ 1754  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_500300.weights online_data/demo/tunnel/tunnel.mp4 
+ 1755  ./darknet-cpp detector train cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_501600.weights 
+ 1756  vim yolo-demo.cfg 
+ 1757  ./darknet-cpp detector train cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_501600.weights 
+ 1758  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502000.weights online_data/demo/tunnel/tunnel.mp4 
+ 1759  ./darknet-cpp detector train cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502000.weights 
+ 1760  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502000.weights online_data/demo/tunnel/tunnel.mp4 
+ 1761  ./darknet-cpp detector train cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502200.weights 
+ 1762  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502500.weights online_data/demo/tunnel/tunnel.mp4 
+ 1763  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502500.weights origin1X.mp4 
+ 1764  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502500.weights online_data/demo/tunnel/tunnel.mp4 
+ 1765  vim yolo-demo.cfg 
+ 1766  ./darknet-cpp detector train cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502500.weights 
+ 1767  vim yolo-demo.cfg 
+ 1768  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_502500.weights online_data/demo/tunnel/tunnel.mp4 
+ 1769  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg ../yolo_weights/yolo-demo_503000.weights online_data/demo/tunnel/tunnel.mp4 
+ 1770  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4 
+ 1771  ls
+ 1772  scp yolo-demo.cfg newslab@140.112.28.114:~/kucw/darknet-cpp2/train_model/
+ 1773  scp ../yolo_weights/yolo-demo_503000.weights  newslab@140.112.28.114:~/kucw/darknet-cpp2/train_model/
+ 1774  scp yolo.weights  newslab@140.112.28.114:~/kucw/darknet-cpp2/train_model/
+ 1775  ffmpeg -i origin.mp4 -ss 00:00:00 -t 00:01:15 -async 1 demo_origin_y3.mp4
+ 1776  ls
+ 1777  scp demo_origin_y3.mp4   newslab@140.112.28.114:~/
+ 1778  ls
+ 1779  vim src/demo.c 
+ 1780  ls
+ 1781  ll
+ 1782  vim src/demo.c 
+ 1783  ls
+ 1784  cd ..
+ 1785  ls
+ 1786  scp -r newslab@140.112.28.114:~/kucw/darknet-cpp2 .
+ 1787  ls
+ 1788  cd darknet-cpp2/
+ 1789  vim src/demo.c 
+ 1790  ls
+ 1791  vim src/demo.c
+ 1792  ls
+ 1793  vim src/demo.c
+ 1794  ls
+ 1795  cd ..
+ 1796  ls
+ 1797  cd darknetc
+ 1798  cd darknet-cp
+ 1799  cd darknet-cpp
+ 1800  ls
+ 1801  vim ls
+ 1802  ls
+ 1803  cd src
+ 1804  pwd
+ 1805  vim src/demo.c
+ 1806  vim demo.c 
+ 1807  ls
+ 1808  cd ..
+ 1809  ls
+ 1810  cd darknet-cpp2/
+ 1811  ls
+ 1812  vim src/demo.c 
+ 1813  ls
+ 1814  vim t.sh 
+ 1815  ls
+ 1816  ifconfig
+ 1817  pwd
+ 1818  make
+ 1819  ls
+ 1820  make
+ 1821  vim src/image.c 
+ 1822  ls
+ 1823  vim Makefile 
+ 1824  make
+ 1825  fg
+ 1826  make
+ 1827  ls
+ 1828  cd src/
+ 1829  ls
+ 1830  make
+ 1831  cd ..
+ 1832  ls
+ 1833  make
+ 1834  make darknet
+ 1835  ls
+ 1836  ./darknet-cpp 
+ 1837  vim t.sh 
+ 1838  ./train_model/
+ 1839  sh t.sh
+ 1840  bash t.sh
+ 1841  ls
+ 1842  ./darknet-cpp 
+ 1843  vim README.md 
+ 1844  fg
+ 1845  ls
+ 1846  make -B
+ 1847  ls src/
+ 1848  vim Makefile 
+ 1849  fg
+ 1850  make -B
+ 1851  ls
+ 1852  ls src/
+ 1853  fg
+ 1854  make
+ 1855  fg
+ 1856  git st
+ 1857  fg
+ 1858  git status
+ 1859  fg
+ 1860  ls
+ 1861  fg
+ 1862  make -B
+ 1863  fg
+ 1864  make -B
+ 1865  fg
+ 1866  make -B
+ 1867  fg
+ 1868  ls
+ 1869  cd darknet
+ 1870  ls
+ 1871  cd ..
+ 1872  ls
+ 1873  cd elastic/
+ 1874  ls
+ 1875  cd ..
+ 1876  ls
+ 1877  cd darknet
+ 1878  ls
+ 1879  git st
+ 1880  git status
+ 1881  ls
+ 1882  cat README.md 
+ 1883  cd ..
+ 1884  ls
+ 1885  cd darknet_v2/
+ 1886  ls
+ 1887  cat README.md 
+ 1888  ls
+ 1889  cd ..
+ 1890  ls
+ 1891  cd darknet
+ 1892  ls
+ 1893  cat bad.list 
+ 1894  cd src/
+ 1895  ls
+ 1896  cd ..
+ 1897  ls
+ 1898  cd /tmp/darknet-cpp2/
+ 1899  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4
+ 1900  ls
+ 1901  cd
+ 1902  ssh newslab@140.112.28.114
+ 1903  sudo rmmod nvidia_uvm
+ 1904  ssh jeff@140.112.28.112
+ 1905  ssh newslab@140.112.28.114
+ 1906  ssh newslab@140.112.28.114 -Y
+ 1907  ifconfiug
+ 1908  ifconfig
+ 1909  ls
+ 1910  cd darknet-cpp2/
+ 1911  ls
+ 1912  cat t.sh 
+ 1913  ./darknet-cpp 
+ 1914  bash t.sh
+ 1915  ls
+ 1916  cat 1 
+ 1917  rm 1 
+ 1918  ls
+ 1919  vim Makefile 
+ 1920  ls
+ 1921  cat t.sh 
+ 1922  ls
+ 1923  cat t.sh 
+ 1924  ls ~/
+ 1925  cat t.sh 
+ 1926  locate online_data
+ 1927  ls
+ 1928  cat t.sh
+ 1929  ls
+ 1930  cd Y3demovideo/
+ 1931  ls
+ 1932  nautilus .
+ 1933  ls
+ 1934  cd ..
+ 1935  lsa
+ 1936  ls
+ 1937  ./darknet-cpp 
+ 1938  cat t.sh
+ 1939  s
+ 1940  ls
+ 1941  cat bad.list 
+ 1942  ls
+ 1943  cat t.sh
+ 1944  ./darknet-cpp dddd
+ 1945  ls
+ 1946  vim run.sh
+ 1947  ls
+ 1948  cat run.sh 
+ 1949  cat Y3demovideo/
+ 1950  ls Y3demovideo/
+ 1951  vim run.sh 
+ 1952  ls
+ 1953  fg
+ 1954  ls
+ 1955  cat run.sh 
+ 1956  vim /tmp/darknet-cpp2/run.sh 
+ 1957  vimdiff run.sh /tmp/darknet-cpp2/run.sh 
+ 1958  ls
+ 1959  bash run.sh 
+ 1960  [A
+ 1961  bash run.sh 
+ 1962  [A
+ 1963  bash run.sh 
+ 1964  ls
+ 1965  cd ..
+ 1966  ls
+ 1967  cd darknet-cpp2/
+ 1968  ls
+ 1969  locate history_cmd
+ 1970  cp ~/.bash_history history_cmd
+ 1971  ls
+ 1972  pwd
+ 1973  ls
+ 1974  pwd
+ 1975  ls
+ 1976  cd Y3demovideo/
+ 1977  ls
+ 1978  scp -r newslab@140.112.28.114:~/kucw/darknet-cpp2/Y3demovideo .
+ 1979  ls
+ 1980  scp -r newslab@140.112.28.114:~/kucw/darknet-cpp2/Y3demovideo .
+ 1981  ls
+ 1982  nautilus .
+ 1983  cd Y3demovideo/
+ 1984  ls
+ 1985  vim y3demo.prproj 
+ 1986  ls
+ 1987  cd ..
+ 1988  ls
+ 1989  md5sum raw_video/*
+ 1990  md5sum Y3demovideo/raw_video/
+ 1991  md5sum Y3demovideo/raw_video/*
+ 1992  ls
+ 1993  rm -r Y3demovideo/raw_video/
+ 1994  ls
+ 1995  cd Y3demovideo/
+ 1996  ls
+ 1997  cd ..
+ 1998  ls
+ 1999  cd ..
+ 2000  ls
+ 2001  cd darknet-cpp2/
+ 2002  ls
+ 2003  cd src/
+ 2004  ls
+ 2005  vim darknet.c 
+ 2006  grep run_detector *
+ 2007  ls
+ 2008  grep run_detector -ri
+ 2009  vim detector.c 
+ 2010  ls
+ 2011  vim history_cmd 
+ 2012  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4
+ 2013  ls
+ 2014  cd ..
+ 2015  ls
+ 2016  cat run.sh 
+ 2017  ls
+ 2018  cat run.sh 
+ 2019  ls
+ 2020  ls 
+ 2021  ls
+ 2022  vim src/demo.c 
+ 2023  git st
+ 2024  git status
+ 2025  git diff src/demo.cc
+ 2026  git diff src/demo.c\
+ 2027  git diff src/demo.c
+ 2028  ls
+ 2029  cd src/
+ 2030  ls
+ 2031  vim demo.c 
+ 2032  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4
+ 2033  cd ..
+ 2034  ./darknet-cpp detector demo cfg/coco.data yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4
+ 2035  ./darknet-cpp detector demo cfg/coco.data cfg/yolo-demo.cfg yolo.weights online_data/demo/tunnel/tunnel.mp4
+ 2036  ./darknet-cpp detector demo cfg/coco.data cfg/yolo-demo.cfg yolo_weights/yolo.weights online_data/demo/tunnel/tunnel.mp4
+ 2037  ./darknet-cpp detector demo cfg/coco.data cfg/yolo-demo.cfg yolo_weights/yolo.weights Y3demovideo/demo_merge.mp4 
+ 2038  s
+ 2039  ls
+ 2040  vim src/demo.c 
+ 2041  git st
+ 2042  git status
+ 2043  git branch
+ 2044  gitg &
+ 2045  history >log2

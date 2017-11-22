@@ -30,7 +30,7 @@ ARCH= -gencode arch=compute_20,code=[sm_20,sm_21] \
 # C Definitions
 
 VPATH=./src/
-EXEC=darknet
+EXEC=darknet-cpp
 OBJDIR=./obj/
 CC=g++ -std=c++11
 

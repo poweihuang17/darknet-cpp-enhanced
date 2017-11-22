@@ -21,12 +21,39 @@ command example:
 ### Baseline:
 
 * mode change:
-Comment out source code: file `src/demo.c` line 365-378.
+Comment out source code: file `src/demo.c` line 366-379.
 
 * fusion:
-Comment out source code: file `src/demo.c` line 403-438, line 441-444, anything related to `up` and `right`.
+Comment out source code: file `src/demo.c` line 404-439 and line 442-445, anything related to `up` and `right`.
 The result video can see that, long range results decrease drastically.
 
 ### Enhance:
 
 Don't comment out above code, run on video.
+
+### Add black box:
+
+Remove Comment: file `src/demo.c` line 447-448, which use function `rectangle` to draw box.
+
+### Tunnel video:
+
+1. As description above, remove fusion part.
+
+2-1. Modify model description at src/demo.c line 87, model_name to "Yolo v2", run with command:
+```
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/yolo.weights Y3demovideo/tunnel.mp4
+```
+
+2-2. Modify model description at src/demo.c line 87, model_name from "Tunnel model", run with command:
+```
+./darknet-cpp detector demo cfg/coco.data cfg/yolo.cfg yolo_weights/tunnel.weights Y3demovideo/tunnel.mp4
+```
+
+### Mapping video:
+
+Compare video wi/wo mapping result and fusion:
+
+* Remove comment of line 303, with will draw green box on every detection region.
+
+* As description above, remove code that draws mapping result, `src/demo.c` line 459-463
+
